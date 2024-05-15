@@ -1,7 +1,7 @@
 # litten-form
 ![GitHub](https://img.shields.io/github/license/liuxian496/litten-form)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/liuxian496/litten-form/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/liuxian496/litten-form/badge.svg?branch=main)](https://coveralls.io/github/liuxian496/litten?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/liuxian496/litten-form/badge.svg?branch=main)](https://coveralls.io/github/liuxian496/litten-form?branch=main)
 ![GitHub Repo stars](https://img.shields.io/github/stars/liuxian496/litten-form)
 
 
