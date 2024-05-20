@@ -9,10 +9,14 @@ import {
     FormRegister,
 } from "./form.types";
 
-import { getPrefixNs } from "cyndi/dist/getPrefixNs";
+import { getPrefixNs as cyndiPrefixNs } from "cyndi/dist/getPrefixNs";
 
 import { ExceptionBoundary } from "exception-boundary";
 import { ControlType } from "litten-hooks/dist/enum";
+
+function getPrefixNs(componentName: string, customizePrefix?: string):string {
+    return cyndiPrefixNs(componentName, customizePrefix, "litten");
+}
 
 function getVisualStates(cls?: string) {
     const prefixCls = getPrefixNs("form", cls);
