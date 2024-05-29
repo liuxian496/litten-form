@@ -1,11 +1,10 @@
-import type { AddonOptionsBabel } from "@storybook/addon-coverage";
 import type { StorybookConfig } from "@storybook/react-vite";
+import type { AddonOptionsVite } from "@storybook/addon-coverage";
 
-const coverageConfig: AddonOptionsBabel = {
+const coverageConfig: AddonOptionsVite = {
     istanbul: {
         include: ["**"],
         exclude: ["**/src/test/**"],
-        excludeNodeModules: true,
     },
 };
 
