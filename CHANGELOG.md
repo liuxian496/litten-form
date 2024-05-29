@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/liuxian496/litten-form/compare/v1.0.2...v1.0.3) (2024-05-29)
+
+
+### Bug Fixes
+
+* 修改FormControl的渲染方式 ([2467284](https://github.com/liuxian496/litten-form/commit/2467284fc7dd5df25cc695a985ba8d562e240643))
+
+
+
 ## [1.0.2](https://github.com/liuxian496/litten-form/compare/v1.0.1...v1.0.2) (2024-05-20)
 
 

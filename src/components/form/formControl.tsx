@@ -1,16 +1,20 @@
-import  { useContext, useEffect, useState } from "react";
+import { Children, cloneElement, useContext, useEffect, useState } from "react";
 
 import { ControlType } from "litten-hooks/dist/enum";
-
 import { getDefaultValueByDisplayName } from "litten-hooks/dist/contentControl";
 import { ContentControlProps } from "litten-hooks/dist/control/contentControl/contentControl.types";
-import { LittenCheckedChangeEvent, LittenContentChangeEvent } from "litten-hooks/dist/control/event/littenEvent.types";
+import {
+    LittenCheckedChangeEvent,
+    LittenContentChangeEvent,
+} from "litten-hooks/dist/control/event/littenEvent.types";
 
 import { FormControlProps, FormItemValue } from "./form.types";
 import { FormContext } from "./form";
 
 export const FormControl = (props: FormControlProps) => {
     const { children, valuePath } = props;
+
+    const contentControl = Children.only(children);
 
     const { type: Component, props: childrenProps } = children;
 
@@ -58,24 +62,18 @@ export const FormControl = (props: FormControlProps) => {
     }
 
     function renderCheckedControl() {
-        return (
-            <Component
-                {...childrenProps}
-                checked={value}
-                onChange={handleCheckedChange}
-            />
-        );
+        return cloneElement(contentControl, {
+            checked: value,
+            onChange: handleCheckedChange,
+        });
     }
 
     function renderContentControl() {
-        return (
-            <Component
-                {...childrenProps}
-                value={value}
-                defaultValue={defaultValue}
-                onChange={handleValueChange}
-            />
-        );
+        return cloneElement(contentControl, {
+            value,
+            defaultValue,
+            onChange: handleValueChange,
+        });
     }
 
     return (
