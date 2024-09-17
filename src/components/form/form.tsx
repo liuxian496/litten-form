@@ -1,4 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import React, {
+    createContext,
+    useEffect,
+    useState,
+} from "react";
 
 import classnames from "classnames";
 
@@ -14,7 +18,7 @@ import { getPrefixNs as cyndiPrefixNs } from "cyndi/dist/getPrefixNs";
 import { ExceptionBoundary } from "exception-boundary";
 import { ControlType } from "litten-hooks/dist/enum";
 
-function getPrefixNs(componentName: string, customizePrefix?: string):string {
+function getPrefixNs(componentName: string, customizePrefix?: string): string {
     return cyndiPrefixNs(componentName, customizePrefix, "litten");
 }
 

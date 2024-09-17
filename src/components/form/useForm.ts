@@ -12,7 +12,7 @@ export function warn(msg: string) {
 function getValues(formRegister: FormRegister) {
     const value: FormValues = {};
     Object.keys(formRegister).forEach((key) => {
-        const get = formRegister[key].get;
+        const get = formRegister[key]?.get;
         if (get) {
             value[key] = get();
         }
@@ -23,7 +23,7 @@ function getValues(formRegister: FormRegister) {
 
 function setValues(values: FormValues, formRegister: FormRegister) {
     Object.keys(formRegister).forEach((key) => {
-        const set = formRegister[key].set;
+        const set = formRegister[key]?.set;
         set && set(values[key]);
     });
 }

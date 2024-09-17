@@ -23,6 +23,9 @@
 <code>react-dom</code>
 上述依赖，打包时不包含，需要使用的项目自行引入。
 
+## 覆盖率
+<p>npm run test-storybook -- --coverage</p>
+
 ## 如果你想请我喝一咖啡（Buy Me a Coffee）
 <img src=".\\public\\wechat.jpg" height="360">
 <img src=".\\public\\alipay.jpg" height="360">
