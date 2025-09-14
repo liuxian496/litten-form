@@ -3,9 +3,12 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Form } from '../components/form/form';
 
 import { CheckboxTest } from '../test/form/checkboxTest';
+import { CustomizeValidationTest } from '../test/form/customizeValidationTest';
 import { DefaultTest } from '../test/form/defaultTest';
 import { DuplicateValuePathTest } from '../test/form/duplicateValuePathTest';
+import { ExtendValidationTest } from '../test/form/extendValidationTest';
 import { MultiFormTest } from '../test/form/mulitiFormTest';
+import { UseFormTest } from '../test/form/useFormTest';
 
 export default {
   title: 'Example/Form',
@@ -35,3 +38,9 @@ export const DuplicateValuePath = {
 };
 
 export const MultiForm = MultiFormTest;
+
+export const CustomizeValidation = CustomizeValidationTest;
+
+export const UseForm = UseFormTest;
+
+export const ExtendValidation = ExtendValidationTest;

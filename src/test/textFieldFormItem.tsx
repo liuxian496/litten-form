@@ -8,11 +8,12 @@ import {
   TextFieldValue,
 } from 'litten-hooks/dist/control/event/littenEvent.types';
 import { TextFieldProps } from 'litten/dist/components/textField/textField.types';
-import { injectVerifyFormItem } from '../inject';
-import { FormHelperInfo, FormItemProps } from './form.types';
-import { BaseValidation } from './formBase';
-import { useFormItemValue } from './useFormItemValue';
-import { useHelperInfo } from './useHelperInfo';
+
+import { FormHelperInfo, FormItemProps } from '../components/form/form.types';
+import { BaseValidation } from '../components/form/formBase';
+import { useFormItemValue } from '../components/form/useFormItemValue';
+import { useHelperInfo } from '../components/form/useHelperInfo';
+import { injectVerifyFormItem } from '../components/inject';
 
 export const Validation = {
   ...BaseValidation,

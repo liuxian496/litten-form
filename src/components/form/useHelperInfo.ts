@@ -15,9 +15,7 @@ import { BaseValidation } from './formBase';
  *   - 校验并更新帮助信息的函数 (`(value: V) => T`),
  *   - 更新帮助信息状态的set函数 (`Dispatch<SetStateAction<T | undefined>>`)。
  */
-export function useHelperInfo<T, V, VT>(
-  validations: FormItemValidation<VT>[] = []
-) {
+export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
   const [currentHelperText, setCurrentHelperText] = useState<T>();
 
   function verifyFormItem(value: V) {

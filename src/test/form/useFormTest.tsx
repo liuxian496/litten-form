@@ -1,20 +1,32 @@
 import { FormStory } from '../../stories/form.stories';
 
+import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
+import { TextFieldFormItem } from '../textFieldFormItem';
 type Data = {
   name: string;
 };
 
 const Test = () => {
-  const spiritForm = useForm();
+  const [formRef, myForm] = useForm();
 
-  spiritForm.getValues() as Data;
-  spiritForm.clear();
-  spiritForm.getValueByPath('name');
-  spiritForm.setValues({ name: 'Jerry' });
-  spiritForm.setValueByPath('name', 'Jerry');
+  myForm?.getValues() as Data;
+  myForm?.clear();
+  myForm?.getValueByPath('name');
+  myForm?.setValues([{ path: 'name', value: 'Tom' }]);
+  myForm?.setValueByPath('name', 'Jerry');
+  myForm?.setHelpTextByPath('count', 'Not registered');
+  myForm?.setHelpTextByPath('name', '请输入用户名');
 
-  return <>Test TestUseForm</>;
+  function render() {
+    return (
+      <Form ref={formRef}>
+        <TextFieldFormItem path="name" />
+      </Form>
+    );
+  }
+
+  return render();
 };
 
 export const UseFormTest: FormStory = {

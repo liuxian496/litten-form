@@ -11,13 +11,11 @@ import { FormStory } from '../../stories/form.stories';
 
 import { Form } from '../../components/form/form';
 import { FormControl } from '../../components/form/formControl';
-import {
-  TextFieldFormItem,
-  Validation,
-} from '../../components/form/textFieldFormItem';
+
 import { useForm } from '../../components/form/useForm';
 
 import { FormLabel } from 'litten/dist/formLabel';
+import { TextFieldFormItem, Validation } from '../textFieldFormItem';
 type Data = {
   name: string;
   animation: string;
