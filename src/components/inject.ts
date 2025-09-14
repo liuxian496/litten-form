@@ -8,13 +8,3 @@ export const formInjector: FormInjector = {
 export function injectVerifyFormItem(verifyFormItem: VerifyFormItemFunction) {
   formInjector.extendVerifyFormItem = verifyFormItem;
 }
-
-injectVerifyFormItem((value, type) => {
-  let result = false;
-
-  if (type === Validation.StringRequired) {
-    result = typeof value === 'string' && value.trim() !== '';
-  }
-
-  return result;
-});

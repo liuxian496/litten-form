@@ -9,8 +9,9 @@ import { FormArgs, FormItemValue, FormProps, FormRegister } from './form.types';
 
 import { ExceptionBoundary } from 'exception-boundary';
 import { ControlType } from 'litten-hooks/dist/enum';
-import { getVisualStates } from './formBase';
+import { validate } from '../validation';
 import { FormContext, initContext } from './context';
+import { getVisualStates } from './formBase';
 import {
   getValueByPath,
   getValues,
@@ -18,7 +19,6 @@ import {
   setValueByPath,
   setValues,
 } from './formUtil';
-import { validate } from '../validation';
 
 /**
  * Form 是一个 React 组件，提供基于React Context的表单管理系统

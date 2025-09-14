@@ -1,4 +1,3 @@
-import { FormItemValue } from './form.types';
 import {
   Dispatch,
   SetStateAction,
@@ -7,6 +6,7 @@ import {
   useState,
 } from 'react';
 import { FormContext } from './context';
+import { FormItemValue } from './form.types';
 
 /**
  *  提供一个自定义hook, 用来实现表单项的受控逻辑

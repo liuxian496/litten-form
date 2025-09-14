@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FormStory } from '../../stories/form.stories';
 
 import { useForm } from '../../components/form/useForm';

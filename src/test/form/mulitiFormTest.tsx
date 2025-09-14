@@ -1,16 +1,15 @@
-import React, { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import { LittenTextChangeEvent } from 'litten-hooks/dist/control/event/littenEvent.types';
 import { Button } from 'litten/dist/button';
 import { TextField } from 'litten/dist/textField';
 
-import { userEvent, within, expect } from '@storybook/test';
+import { expect, userEvent, within } from '@storybook/test';
 
 import { FormStory } from '../../stories/form.stories';
 
 import { Form } from '../../components/form/form';
 import { FormControl } from '../../components/form/formControl';
-import { FormRef } from '../../components/form/form.types';
 import { useForm } from '../../components/form/useForm';
 
 const Test = () => {

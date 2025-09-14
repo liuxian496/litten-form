@@ -1,23 +1,38 @@
-import React, { FocusEvent, ChangeEvent } from 'react';
+import React, { ChangeEvent, FocusEvent } from 'react';
 
 import { TextField } from 'litten/dist/textField';
-import { useFormItemValue } from './useFormItemValue';
-import { FormHelperInfo, FormItemProps } from './form.types';
+
+import { ControlType, getDefaultValueByDisplayName } from 'litten-hooks';
 import {
   LittenEvent,
   TextFieldValue,
 } from 'litten-hooks/dist/control/event/littenEvent.types';
 import { TextFieldProps } from 'litten/dist/components/textField/textField.types';
-import { ControlType, getDefaultValueByDisplayName } from 'litten-hooks';
-import { useHelperInfo } from './useHelperInfo';
+import { injectVerifyFormItem } from '../inject';
+import { FormHelperInfo, FormItemProps } from './form.types';
 import { BaseValidation } from './formBase';
+import { useFormItemValue } from './useFormItemValue';
+import { useHelperInfo } from './useHelperInfo';
 
 export const Validation = {
   ...BaseValidation,
+  /**
+   * 字符串必填
+   */
   StringRequired: 'stringRequired',
 } as const;
 
 export type ValidationType = (typeof Validation)[keyof typeof Validation];
+
+injectVerifyFormItem((value, type) => {
+  let result = false;
+
+  if (type === Validation.StringRequired) {
+    result = typeof value === 'string' && value.trim() !== '';
+  }
+
+  return result;
+});
 
 interface TextFieldFormItemProps
   extends FormItemProps<ValidationType>,

@@ -1,8 +1,6 @@
-import React from 'react';
-
 import { TextField } from 'litten/dist/textField';
 
-import { within, expect } from '@storybook/test';
+import { expect, within } from '@storybook/test';
 
 import { FormStory } from '../../stories/form.stories';
 
