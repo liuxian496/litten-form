@@ -84,7 +84,11 @@ export const TextFieldFormItem = ({
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        <div>{currentHelperText}</div>
+        <div
+          style={{ color: '#d32f2f', fontStyle: 'italic', fontSize: '0.88rem' }}
+        >
+          {currentHelperText}
+        </div>
       </div>
     );
   }

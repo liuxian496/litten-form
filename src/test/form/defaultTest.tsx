@@ -15,7 +15,6 @@ import { FormControl } from '../../components/form/formControl';
 import { useForm } from '../../components/form/useForm';
 
 import { FormLabel } from 'litten/dist/formLabel';
-import { TextFieldFormItem, Validation } from '../textFieldFormItem';
 type Data = {
   name: string;
   animation: string;
@@ -37,24 +36,9 @@ const Test = () => {
     myForm?.clear();
   }
 
-  function handleSaveClick() {
-    const result = myForm?.validate();
-    console.log('result', result);
-  }
-
   return (
     <div>
       <Form ref={formRef}>
-        <TextFieldFormItem
-          path="fruit"
-          validations={[
-            {
-              helpInfo: '水果不能为空',
-              type: Validation.StringRequired,
-            },
-          ]}
-        />
-        <span>今天天气不错，挺风和日丽的</span>
         <StackPanel
           direction="column"
           justifyContent="space-evenly"
@@ -79,9 +63,6 @@ const Test = () => {
         Show Value
       </Button>
       <Button onClick={handleClearClick}>Clear</Button>
-      <Button mode={Mode.primary} onClick={handleSaveClick}>
-        Save
-      </Button>
       <div style={{ marginTop: '10px' }}>{msg}</div>
     </div>
   );

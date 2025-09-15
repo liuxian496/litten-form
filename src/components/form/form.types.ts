@@ -7,12 +7,18 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { BaseValidation } from './formBase';
 
 /**
- * 表单组件
- * @property children - 子组件
- * @property {ValidationMode} validationMode - 验证模式，分步验证或全部验证
+ * 表单组件属性
+ * @property children - 表单组件的子组件
+ * @property {ValidationMode} validationMode - 表单验证模式，支持分步验证或全部验证。默认全部验证（暂时只支持全部验证）
  */
 export interface FormProps extends UserControlProps {
+  /**
+   * 表单组件的子组件
+   */
   children?: ReactNode;
+  /**
+   * 表单验证模式，支持分步验证或全部验证。默认全部验证（暂时只支持全部验证）
+   */
   validationMode?: ValidationMode;
 }
 
