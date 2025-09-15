@@ -5,7 +5,14 @@ import React, {
   useState,
 } from 'react';
 
-import { FormArgs, FormItemValue, FormProps, FormRegister } from './form.types';
+import {
+  FormArgs,
+  FormHelperInfo,
+  FormItemValue,
+  FormProps,
+  FormRegister,
+  ValidationMode,
+} from './form.types';
 
 import { ExceptionBoundary } from 'exception-boundary';
 import { ControlType } from 'litten-hooks/dist/enum';
@@ -29,7 +36,15 @@ import {
  * @returns {JSX.Element} 渲染后的表单组件
  */
 export const Form = forwardRef(
-  ({ children, prefixCls, ...props }: FormProps, ref) => {
+  (
+    {
+      children,
+      prefixCls,
+      validationMode = ValidationMode.all,
+      ...props
+    }: FormProps,
+    ref
+  ) => {
     const [formRegister] = useState<FormRegister>({});
 
     const [errorMsg, setErrorMsg] = useState<undefined | string>();
@@ -55,11 +70,8 @@ export const Form = forwardRef(
         getValueByPath: (path: string) => {
           return getValueByPath(path, formRegister);
         },
-        setHelpTextByPath: (
-          path: string,
-          helperText: string | JSX.Element | undefined
-        ) => {
-          setHelpTextByPath(path, helperText, formRegister);
+        setHelpTextByPath: (path: string, helpInfo: FormHelperInfo) => {
+          setHelpTextByPath(path, helpInfo, formRegister);
         },
         setValues: (args: FormArgs) => {
           return setValues(args, formRegister);
@@ -68,10 +80,10 @@ export const Form = forwardRef(
           setValueByPath(path, value, formRegister);
         },
         validate: () => {
-          return validate(formRegister);
+          return validate(formRegister, validationMode);
         },
       };
-    }, [formRegister]);
+    }, [formRegister, validationMode]);
 
     return (
       <ExceptionBoundary errorMsg={errorMsg}>

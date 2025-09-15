@@ -8,6 +8,7 @@ import { DefaultTest } from '../test/form/defaultTest';
 import { DuplicateValuePathTest } from '../test/form/duplicateValuePathTest';
 import { ExtendValidationTest } from '../test/form/extendValidationTest';
 import { MultiFormTest } from '../test/form/mulitiFormTest';
+import { StepValidationTest } from '../test/form/stepValidationTest';
 import { UseFormTest } from '../test/form/useFormTest';
 
 export default {
@@ -40,6 +41,8 @@ export const DuplicateValuePath = {
 export const MultiForm = MultiFormTest;
 
 export const CustomizeValidation = CustomizeValidationTest;
+
+export const StepValidation = StepValidationTest;
 
 export const UseForm = UseFormTest;
 
