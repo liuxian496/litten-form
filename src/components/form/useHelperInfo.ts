@@ -30,9 +30,7 @@ export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
           validationAssert?.(value as FormItemValue) === false
             ? (helpInfo as T)
             : undefined;
-      }
-
-      if (formInjector.extendVerifyFormItem) {
+      } else if (formInjector.extendVerifyFormItem) {
         result =
           formInjector.extendVerifyFormItem(value as FormItemValue, type) ===
           false
