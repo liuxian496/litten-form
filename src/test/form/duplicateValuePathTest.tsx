@@ -1,54 +1,44 @@
-import React from "react";
+import { TextField } from 'litten/dist/textField';
 
-import { TextField } from "litten/dist/textField";
+import { expect, within } from '@storybook/test';
 
-import { within, expect } from "@storybook/test";
+import { FormStory } from '../../stories/form.stories';
 
-import { FormStory } from "../../stories/form.stories";
-
-import { useForm } from "../../components/form/useForm";
-import { Form } from "../../components/form/form";
-import { FormControl } from "../../components/form/formControl";
+import { Form } from '../../components/form/form';
+import { FormControl } from '../../components/form/formControl';
+import { useForm } from '../../components/form/useForm';
 
 const Test = () => {
-    const myForm = useForm();
+  const [formRef] = useForm();
 
-    return (
-        <Form formRef={myForm}>
-            <div style={{ marginBottom: "10px" }}>
-                <FormControl valuePath="name">
-                    <TextField />
-                </FormControl>
-            </div>
-            <FormControl valuePath="name">
-                <TextField />
-            </FormControl>
-        </Form>
-    );
+  return (
+    <Form ref={formRef}>
+      <div style={{ marginBottom: '10px' }}>
+        <FormControl valuePath="name">
+          <TextField />
+        </FormControl>
+      </div>
+      <FormControl valuePath="name">
+        <TextField />
+      </FormControl>
+    </Form>
+  );
 };
 
-// function myException() {
-//     throw new Error(`Please check your code.`);
-// }
-
 export const DuplicateValuePathTest: FormStory = {
-    parameters: {
-        controls: { hideNoControlsWarning: true },
-    },
-    render: () => <Test />,
-    play: async ({ canvasElement, step }) => {
-        const canvas = within(canvasElement);
+  parameters: {
+    controls: { hideNoControlsWarning: true },
+  },
+  render: () => <Test />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
 
-        await step("Duplicate valuePath", async () => {
-            await expect(
-                await canvas.findByText(
-                    '[litten error]: The valuePath "name" is used by other FormControl, Please check your form.'
-                )
-            ).toBeInTheDocument();
-
-            // await expect(() => myException()).toThrow(
-            //     "Please check your code."
-            // );
-        });
-    },
+    await step('Duplicate valuePath', async () => {
+      await expect(
+        await canvas.findByText(
+          '[litten error]: The valuePath "name" is used by other FormControl, Please check your form.'
+        )
+      ).toBeInTheDocument();
+    });
+  },
 };
