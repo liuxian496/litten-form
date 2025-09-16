@@ -1,5 +1,4 @@
 import { FormInjector, VerifyFormItemFunction } from './form/form.types';
-import { Validation } from './form/textFieldFormItem';
 
 export const formInjector: FormInjector = {
   extendVerifyFormItem: undefined,
