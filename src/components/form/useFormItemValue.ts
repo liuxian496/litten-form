@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 import { FormContext } from './context';
-import { FormItemValue } from './form.types';
+import { FormHelperInfo } from './form.types';
 
 /**
  *  提供一个自定义hook, 用来实现表单项的受控逻辑
@@ -21,17 +21,15 @@ import { FormItemValue } from './form.types';
  *
  * @returns 包含当前值和用于更新值的 setter 的元组
  */
-export function useFormItemValue<T = FormItemValue, V = string>(
+export function useFormItemValue<T, V = string>(
   valuePath: string,
-  initialValue?: FormItemValue,
-  onGetErrorMessage?:
-    | ((value: V) => string | JSX.Element | undefined)
-    | undefined,
-  setHelperText?: Dispatch<SetStateAction<string | JSX.Element | undefined>>
+  initialValue?: T,
+  onGetErrorMessage?: (value: V) => FormHelperInfo,
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>
 ) {
   const formContext = useContext(FormContext);
 
-  const [value, setValue] = useState<FormItemValue>(initialValue);
+  const [value, setValue] = useState<T | undefined>(initialValue);
 
   useEffect(() => {
     formContext?.checkValuePath(valuePath);
@@ -43,11 +41,12 @@ export function useFormItemValue<T = FormItemValue, V = string>(
   useEffect(() => {
     formContext?.register({
       path: valuePath,
-      get: () => {
-        return value;
+      get: <T>() => {
+        return value as T | undefined;
       },
-      set: setValue,
-      validate: (newValue: FormItemValue) => onGetErrorMessage?.(newValue as V),
+      set: setValue as <T>(value: T) => void,
+      validate: <T>(newValue: T) =>
+        onGetErrorMessage?.(newValue as unknown as V),
       setHelperText: setHelperText,
     });
   }, [formContext, onGetErrorMessage, value, valuePath, setHelperText]);

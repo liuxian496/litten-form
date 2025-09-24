@@ -3,18 +3,19 @@ import { useState } from 'react';
 import { Button } from 'litten/dist/button';
 import { Mode } from 'litten/dist/enum';
 import { StackPanel } from 'litten/dist/stackPanel';
-import { TextField } from 'litten/dist/textField';
 
 import { expect, userEvent, within } from '@storybook/test';
 
 import { FormStory } from '../../stories/form.stories';
 
 import { Form } from '../../components/form/form';
-import { FormControl } from '../../components/form/formControl';
 
 import { useForm } from '../../components/form/useForm';
 
+import { Placement } from 'litten-hooks';
 import { FormLabel } from 'litten/dist/formLabel';
+import { TextFieldFormItem } from '../textFieldFormItem';
+
 type Data = {
   name: string;
   animation: string;
@@ -44,18 +45,15 @@ const Test = () => {
           justifyContent="space-evenly"
           alignItems="flex-start"
         >
-          <FormLabel label="Name:">
-            <FormControl valuePath="name">
-              <TextField data-testid="nameTextField" />
-            </FormControl>
+          <FormLabel label="Name:" labelPlacement={Placement.top}>
+            <TextFieldFormItem data-testid="nameTextField" path="name" />
           </FormLabel>
-          <FormLabel label="Animation:">
-            <FormControl valuePath="animation">
-              <TextField
-                data-testid="animationTextField"
-                defaultValue="Tom & Jerry"
-              />
-            </FormControl>
+          <FormLabel label="Animation:" labelPlacement={Placement.top}>
+            <TextFieldFormItem
+              data-testid="animationTextField"
+              path="animation"
+              initialValue="Tom & Jerry"
+            />
           </FormLabel>
         </StackPanel>
       </Form>
@@ -83,7 +81,7 @@ export const DefaultTest: FormStory = {
     const clearBtu = canvas.getByText('Clear');
 
     await step(
-      'Default "Name" is "", defualt "Animation" is Tom & Jerry',
+      'Default "Name" is "", Default "Animation" is Tom & Jerry',
       async () => {
         await expect(nameTextField).toHaveValue('');
 
@@ -106,21 +104,16 @@ export const DefaultTest: FormStory = {
       ).toBeInTheDocument();
     });
 
-    await step(
-      'Clear Form, then default "Name" is "", defualt "Animation" is Tom & Jerry',
-      async () => {
-        await userEvent.click(clearBtu);
+    await step('Clear Form, then "Name" is "", "Animation" is ""', async () => {
+      await userEvent.click(clearBtu);
 
-        await expect(nameTextField).toHaveValue('');
+      await expect(nameTextField).toHaveValue('');
 
-        await expect(animationTextField).toHaveValue('Tom & Jerry');
+      await expect(animationTextField).toHaveValue('');
 
-        await userEvent.click(showValueBtu);
+      await userEvent.click(showValueBtu);
 
-        await expect(
-          canvas.getByText('Name: , Animation: Tom & Jerry')
-        ).toBeInTheDocument();
-      }
-    );
+      await expect(canvas.getByText('Name: , Animation:')).toBeInTheDocument();
+    });
   },
 };

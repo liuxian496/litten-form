@@ -2,15 +2,14 @@ import { useState } from 'react';
 
 import { LittenTextChangeEvent } from 'litten-hooks/dist/control/event/littenEvent.types';
 import { Button } from 'litten/dist/button';
-import { TextField } from 'litten/dist/textField';
 
 import { expect, userEvent, within } from '@storybook/test';
 
 import { FormStory } from '../../stories/form.stories';
 
 import { Form } from '../../components/form/form';
-import { FormControl } from '../../components/form/formControl';
 import { useForm } from '../../components/form/useForm';
+import { TextFieldFormItem } from '../textFieldFormItem';
 
 const Test = () => {
   const [nameFormRef, nameForm] = useForm();
@@ -22,7 +21,7 @@ const Test = () => {
     console.log(`name change to ${event.value}`);
   }
 
-  function handlSetNameClick() {
+  function handleSetNameClick() {
     nameForm?.setValueByPath('name', 'Tom');
 
     //测试分支
@@ -47,19 +46,23 @@ const Test = () => {
   return (
     <>
       <Form data-testid="nameForm" ref={nameFormRef}>
-        <FormControl valuePath="name">
-          <TextField data-testid="name" onChange={handleNameChange} />
-        </FormControl>
-        <Button onClick={handlSetNameClick}>Set Name</Button>
+        <TextFieldFormItem
+          data-testid="name"
+          path="name"
+          onChange={handleNameChange}
+        />
+        <Button onClick={handleSetNameClick}>Set Name</Button>
       </Form>
       <Form
         data-testid="salaryForm"
         ref={salaryFormRef}
         style={{ marginTop: '10px' }}
       >
-        <FormControl valuePath="salary">
-          <TextField data-testid="salary" onChange={handleSalaryChange} />
-        </FormControl>
+        <TextFieldFormItem
+          data-testid="salary"
+          path="salary"
+          onChange={handleSalaryChange}
+        />
         <Button onClick={handleSalaryClick}>Set Salary</Button>
       </Form>
       {salary >= 1000000 && <div>恭喜，达成百万年薪</div>}

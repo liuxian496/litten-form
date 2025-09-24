@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { Button } from 'litten/dist/button';
-import { Checkbox } from 'litten/dist/checkbox';
 import { FormLabel } from 'litten/dist/formLabel';
 
 import { expect, userEvent, within } from '@storybook/test';
@@ -9,8 +8,8 @@ import { expect, userEvent, within } from '@storybook/test';
 import { FormStory } from '../../stories/form.stories';
 
 import { Form } from '../../components/form/form';
-import { FormControl } from '../../components/form/formControl';
 import { useForm } from '../../components/form/useForm';
+import { CheckboxFormItem } from '../checkboxFieldFormItem';
 
 type Data = {
   fruit: boolean;
@@ -33,9 +32,11 @@ const Test = () => {
     <>
       <Form ref={formRef}>
         <FormLabel label="Fruit:">
-          <FormControl valuePath="fruit">
-            <Checkbox data-testid="fruit" defaultChecked={false} />
-          </FormControl>
+          <CheckboxFormItem
+            data-testid="fruit"
+            path="fruit"
+            defaultChecked={false}
+          />
         </FormLabel>
       </Form>
 
