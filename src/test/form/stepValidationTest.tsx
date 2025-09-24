@@ -12,7 +12,8 @@ import { StackPanel } from 'litten/dist/stackPanel';
 import { useState } from 'react';
 import { ValidationMode } from '../../components/form/form.types';
 import { useForm } from '../../components/form/useForm';
-import { TextFieldFormItem, Validation } from '../textFieldFormItem';
+import { TextFieldFormItem } from '../textFieldFormItem';
+import { Validation } from '../validation';
 
 const Test = () => {
   const [formRef, myForm] = useForm();

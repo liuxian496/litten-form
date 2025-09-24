@@ -11,7 +11,8 @@ import { FormLabel } from 'litten/dist/formLabel';
 import { StackPanel } from 'litten/dist/stackPanel';
 import { useState } from 'react';
 import { useForm } from '../../components/form/useForm';
-import { TextFieldFormItem, Validation } from '../textFieldFormItem';
+import { TextFieldFormItem } from '../textFieldFormItem';
+import { Validation } from '../validation';
 
 const Test = () => {
   const [formRef, myForm] = useForm();

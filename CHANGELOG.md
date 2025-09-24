@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/liuxian496/litten-form/compare/v2.0.0...v2.1.0) (2025-09-24)
+
+
+### Features
+
+* 修改useFormItemValue泛型参数的默认值；添加CheckboxFormItem，测试Checkbox组件 ([df2a7ff](https://github.com/liuxian496/litten-form/commit/df2a7ffb2e69c206a24a5b6369cb0fa89390f2b5))
+
+
+
 # [2.0.0](https://github.com/liuxian496/litten-form/compare/v1.0.4...v2.0.0) (2025-09-16)
 
 

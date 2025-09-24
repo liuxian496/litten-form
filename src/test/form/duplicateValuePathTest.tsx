@@ -1,26 +1,19 @@
-import { TextField } from 'litten/dist/textField';
-
 import { expect, within } from '@storybook/test';
 
 import { FormStory } from '../../stories/form.stories';
 
 import { Form } from '../../components/form/form';
-import { FormControl } from '../../components/form/formControl';
 import { useForm } from '../../components/form/useForm';
+import { TextFieldFormItem } from '../textFieldFormItem';
 
 const Test = () => {
   const [formRef] = useForm();
 
   return (
     <Form ref={formRef}>
-      <div style={{ marginBottom: '10px' }}>
-        <FormControl valuePath="name">
-          <TextField />
-        </FormControl>
-      </div>
-      <FormControl valuePath="name">
-        <TextField />
-      </FormControl>
+      <TextFieldFormItem path="name" data-testid="nameInput" />
+      <div style={{ marginBottom: '10px' }}></div>
+      <TextFieldFormItem path="name" data-testid="nameInput" />
     </Form>
   );
 };

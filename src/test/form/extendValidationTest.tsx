@@ -9,7 +9,8 @@ import { Form } from '../../components/form/form';
 import { Placement } from 'litten-hooks';
 import { FormLabel } from 'litten/dist/formLabel';
 import { useForm } from '../../components/form/useForm';
-import { TextFieldFormItem, Validation } from '../textFieldFormItem';
+import { TextFieldFormItem } from '../textFieldFormItem';
+import { Validation } from '../validation';
 
 const Test = () => {
   const [formRef, myForm] = useForm();

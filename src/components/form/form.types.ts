@@ -64,9 +64,11 @@ export interface FormValues {
  */
 export interface FormItemRegister {
   path: string;
-  get?: () => FormItemValue;
-  set?: React.Dispatch<React.SetStateAction<FormItemValue>>;
-  validate?: (value: FormItemValue) => FormHelperInfo;
+  get?: <V>() => V | undefined;
+  // set?: Dispatch<SetStateAction<T | undefined>>;
+  // set?: <V>(value: SetStateAction<V | undefined>) => void;
+  set?: <T>(value: T) => void;
+  validate?: <V>(value: V) => FormHelperInfo;
   setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>;
 }
 
@@ -124,10 +126,10 @@ export interface FormControlProps {
  * @property initialValue - 表单项的初始值, 不是默认值
  * @property validations - 表单项的验证规则
  */
-export interface FormItemProps<T> {
+export interface FormItemProps<T, V> {
   path: string;
-  initialValue?: FormItemValue;
-  validations?: FormItemValidations<T>;
+  initialValue?: T;
+  validations?: FormItemValidations<V>;
 }
 
 /**
