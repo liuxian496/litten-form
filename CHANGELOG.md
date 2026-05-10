@@ -1,3 +1,12 @@
+# [3.0.0](https://github.com/liuxian496/litten-form/compare/v2.1.0...v3.0.0) (2026-05-10)
+
+
+### Features
+
+* change injectVerifyFormItem to initLittenForm ([3d2328f](https://github.com/liuxian496/litten-form/commit/3d2328f9bf40f1256cede918f792020079fa6b28))
+
+
+
 # [2.1.0](https://github.com/liuxian496/litten-form/compare/v2.0.0...v2.1.0) (2025-09-24)
 
 
@@ -18,11 +27,11 @@
 
 ### Features
 
+* 支持分步验证模式 ([18323ab](https://github.com/liuxian496/litten-form/commit/18323abfbf616c2916468a2a86d671a18f08a0e0))
+* 支持分步验证模式 ([ea4d056](https://github.com/liuxian496/litten-form/commit/ea4d056093add84f5cdf5ff5646bf959c19be19f))
 * 添加 form inject ([6ebd340](https://github.com/liuxian496/litten-form/commit/6ebd3400b34d95fe14c90fba40091789a4b1cb0b))
 * 添加useFormItemValue，废弃FormControl ([33240ee](https://github.com/liuxian496/litten-form/commit/33240ee90e4f8445725b762c526cf6f2b700723f))
 * 添加useHelperInfo ([bbb3ca4](https://github.com/liuxian496/litten-form/commit/bbb3ca4bbc4eca21a9281895799b40647fd08a50))
-* 支持分步验证模式 ([18323ab](https://github.com/liuxian496/litten-form/commit/18323abfbf616c2916468a2a86d671a18f08a0e0))
-* 支持分步验证模式 ([ea4d056](https://github.com/liuxian496/litten-form/commit/ea4d056093add84f5cdf5ff5646bf959c19be19f))
 
 
 
