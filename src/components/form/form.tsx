@@ -1,17 +1,12 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import {
-  FormArgs,
-  FormHelperInfo,
-  FormItemValue,
-  FormProps,
-  FormRegister,
   ValidationMode,
+  type FormArgs,
+  type FormHelperInfo,
+  type FormItemValue,
+  type FormProps,
+  type FormRegister,
 } from './form.types';
 
 import { ExceptionBoundary } from 'exception-boundary';
@@ -49,21 +44,10 @@ export const Form = forwardRef(
 
     const [errorMsg, setErrorMsg] = useState<undefined | string>();
 
-    const [context, setContext] = useState(
-      initContext(formRegister, setErrorMsg)
-    );
-
-    useEffect(() => {
-      setContext(initContext(formRegister, setErrorMsg));
-    }, [formRegister]);
+    const [context] = useState(() => initContext(formRegister, setErrorMsg));
 
     useImperativeHandle(ref, () => {
       return {
-        clear: () => {
-          Object.keys(formRegister).forEach((key) => {
-            formRegister[key]?.set?.(undefined);
-          });
-        },
         getValues: () => {
           return getValues(formRegister);
         },

@@ -1,7 +1,7 @@
 import {
-  FormItemHelper,
-  FormRegister,
   ValidationMode,
+  type FormItemHelper,
+  type FormRegister,
 } from '../form/form.types';
 
 /**
@@ -82,7 +82,7 @@ export function validate(
 
   if (validationMode === ValidationMode.all) {
     result = validateAll(formRegister);
-  } else if (validationMode === ValidationMode.step) {
+  } else {
     result = validateStep(formRegister);
   }
 

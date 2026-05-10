@@ -4,9 +4,9 @@ import { Button } from 'litten/dist/button';
 import { Mode } from 'litten/dist/enum';
 import { StackPanel } from 'litten/dist/stackPanel';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
-import { FormStory } from '../../stories/form.stories';
+import { FormStory } from '../littenForm.stories';
 
 import { Form } from '../../components/form/form';
 
@@ -14,13 +14,8 @@ import { useForm } from '../../components/form/useForm';
 
 import { Placement } from 'litten-hooks';
 import { FormLabel } from 'litten/dist/formLabel';
-import { TextFieldFormItem } from '../textFieldFormItem';
-
-type Data = {
-  name: string;
-  animation: string;
-  xy?: object;
-};
+import { BasicFormData } from '../../pockets/form';
+import { LittenTextField } from '../../pockets/littenForm/littenTextField';
 
 const Test = () => {
   const [formRef, myForm] = useForm();
@@ -28,7 +23,7 @@ const Test = () => {
   const [msg, setMsg] = useState('');
 
   function handleShowValueClick() {
-    const { name, animation } = myForm?.getValues() as Data;
+    const { name, animation } = myForm?.getValues() as BasicFormData;
 
     setMsg(`Name: ${name}, Animation: ${animation}`);
   }
@@ -46,10 +41,10 @@ const Test = () => {
           alignItems="flex-start"
         >
           <FormLabel label="Name:" labelPlacement={Placement.top}>
-            <TextFieldFormItem data-testid="nameTextField" path="name" />
+            <LittenTextField data-testid="nameTextField" path="name" />
           </FormLabel>
           <FormLabel label="Animation:" labelPlacement={Placement.top}>
-            <TextFieldFormItem
+            <LittenTextField
               data-testid="animationTextField"
               path="animation"
               initialValue="Tom & Jerry"

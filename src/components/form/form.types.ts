@@ -1,9 +1,9 @@
-import {
+import type {
   LittenObjectValue,
   LittenValue,
   UserControlProps,
 } from 'litten-hooks/dist/control/userControl/userControl.types';
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 import { BaseValidation } from './formBase';
 
 /**
@@ -30,22 +30,33 @@ export type FormItemValue = LittenValue | LittenObjectValue;
 /**
  * 表单项验证后的提示文字
  */
-export type FormHelperInfo = string | JSX.Element | undefined;
+export type FormHelperInfo = string | JSX.Element;
 
 /**
- * 表单项验证模式
- * @enum {string}
+ * 表单验证模式常量
+ *
+ * @property {"all"} all - 全部验证，验证所有表单项并收集所有无效项的提示信息
+ * @property {"step"} step - 分步验证，按注册顺序验证表单项，遇到第一个无效项时停止验证并返回提示信息
+ *
+ * 用于 FormProps.validationMode 属性，或表单相关 API 的验证模式参数。
+ *
+ * 示例：
+ *   validationMode={ValidationMode.all}
+ *   validationMode={ValidationMode.step}
  */
-export enum ValidationMode {
+export const ValidationMode = {
   /**
-   * 分步验证
+   * 全部验证，验证所有表单项并收集所有无效项的提示信息
    */
-  step = 'step',
+  all: 'all',
   /**
-   * 全部验证
+   * 分步验证，按注册顺序验证表单项，遇到第一个无效项时停止验证并返回提示信息
    */
-  all = 'all',
-}
+  step: 'step',
+} as const;
+
+export type ValidationMode =
+  (typeof ValidationMode)[keyof typeof ValidationMode];
 
 /**
  * 表单数据
@@ -65,11 +76,9 @@ export interface FormValues {
 export interface FormItemRegister {
   path: string;
   get?: <V>() => V | undefined;
-  // set?: Dispatch<SetStateAction<T | undefined>>;
-  // set?: <V>(value: SetStateAction<V | undefined>) => void;
   set?: <T>(value: T) => void;
-  validate?: <V>(value: V) => FormHelperInfo;
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>;
+  validate?: <V>(value: V) => FormHelperInfo | undefined;
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>;
 }
 
 /**
@@ -171,9 +180,9 @@ export interface ExtendedValidation {
  * @property validationAssert - 可选的验证断言函数，接受表单项值作为参数，返回一个布尔值表示验证是否通过
  */
 export interface FormItemValidation<T> {
-  helpInfo: FormHelperInfo;
+  helpInfo?: FormHelperInfo;
   type: T;
-  validationAssert?: (value: FormItemValue) => boolean;
+  validationAssert?: (value: unknown) => boolean;
 }
 
 export type FormItemValidations<T> = FormItemValidation<T>[];
@@ -184,7 +193,7 @@ export type FormItemValidations<T> = FormItemValidation<T>[];
  * @property path - 表单项的值路径
  */
 export interface FormItemHelper {
-  helpInfo: FormHelperInfo;
+  helpInfo?: FormHelperInfo;
   path: string;
 }
 
@@ -246,11 +255,30 @@ export interface FormRef {
   validate: () => FormItemHelper[];
 }
 
-export type VerifyFormItemFunction<V = FormItemValue, T = unknown> = (
-  value: V,
-  type: T
-) => boolean;
-
-export interface FormInjector {
-  extendVerifyFormItem?: VerifyFormItemFunction;
+/**
+ * 表单注入器
+ * @property commonValidationAssert - 可选的公共验证断言函数，接受一个值和一个验证类型作为参数，返回一个布尔值表示验证是否通过
+ * @property getDefaultHelperInfo - 可选的获取默认帮助信息的方法，接受一个值和一个验证类型作为参数，返回一个字符串或JSX元素表示默认帮助信息
+ * @property getInitialValue - 可选的获取初始值的方法，接受一个控件类型作为参数，返回对应的初始值
+ */
+export interface FormInjector<VT = unknown, CT = unknown, T = unknown> {
+  /**
+   * 公共验证断言函数，接受一个值和一个验证类型作为参数，返回一个布尔值表示验证是否通过
+   * @param value - 要验证的值
+   * @param validationType - 验证类型
+   * @returns 验证结果，true表示验证通过，false表示验证失败
+   */
+  commonValidationAssert?(value: unknown, validationType: VT): boolean;
+  /**
+   * 获取默认帮助信息的方法，接受一个验证类型作为参数，返回一个字符串或JSX元素表示默认帮助信息
+   * @param validationType - 验证类型
+   * @returns 默认帮助信息，字符串或JSX元素
+   */
+  getDefaultHelperInfo?(validationType: VT): FormHelperInfo;
+  /**
+   * 获取初始值的方法，接受一个控件类型作为参数，返回对应的初始值
+   * @param controlType - 控件类型
+   * @returns 控件的初始值
+   */
+  getInitialValue?(controlType: CT): T;
 }

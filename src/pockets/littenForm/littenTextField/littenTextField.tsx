@@ -1,57 +1,27 @@
-import React, { ChangeEvent, FocusEvent } from 'react';
+import type { ChangeEvent, FocusEvent } from 'react';
 
 import { TextField } from 'litten/dist/textField';
 
 import { ControlType, getDefaultValueByDisplayName } from 'litten-hooks';
-import {
+import type {
   LittenEvent,
   TextFieldValue,
 } from 'litten-hooks/dist/control/event/littenEvent.types';
-import { TextFieldProps } from 'litten/dist/components/textField/textField.types';
 
-import { FormHelperInfo, FormItemProps } from '../components/form/form.types';
-import { BaseValidation } from '../components/form/formBase';
-import { useFormItemValue } from '../components/form/useFormItemValue';
-import { useHelperInfo } from '../components/form/useHelperInfo';
-import { injectVerifyFormItem } from '../components/inject';
+import { type FormHelperInfo } from '../../../components/form/form.types';
+import { useFormItemValue } from '../../../components/form/useFormItemValue';
+import { useHelperInfo } from '../../../components/form/useHelperInfo';
+import type { ValidationType } from '../../form/validation';
+import type { LittenTextFieldProps } from './littenTextField.types';
 
-export const Validation = {
-  ...BaseValidation,
-  /**
-   * 字符串必填
-   */
-  StringRequired: 'stringRequired',
-} as const;
-
-export type ValidationType = (typeof Validation)[keyof typeof Validation];
-
-injectVerifyFormItem((value, type) => {
-  let result = false;
-
-  if (type === Validation.StringRequired) {
-    result = typeof value === 'string' && value.trim() !== '';
-  }
-
-  return result;
-});
-
-interface TextFieldFormItemProps
-  extends FormItemProps<ValidationType>,
-    Omit<TextFieldProps, 'onBlur'> {
-  onBlur?: (
-    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
-    validationResult: FormHelperInfo
-  ) => void;
-}
-
-export const TextFieldFormItem = ({
+export const LittenTextField = ({
   path,
   initialValue,
   validations = [],
   onBlur,
   onChange,
   ...props
-}: TextFieldFormItemProps) => {
+}: LittenTextFieldProps) => {
   const [currentHelperText, verifyFormItem, setCurrentHelperText] =
     useHelperInfo<FormHelperInfo, string, ValidationType>(validations);
 

@@ -2,40 +2,38 @@ import { useState } from 'react';
 
 import { Button } from 'litten/dist/button';
 import { FormLabel } from 'litten/dist/formLabel';
+import { NativeCheckbox } from '../../pockets/nativeForm/nativeCheckbox';
 
-import { expect, userEvent, within } from '@storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 
-import { FormStory } from '../../stories/form.stories';
+import { FormStory } from '../littenForm.stories';
 
 import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
-import { CheckboxFormItem } from '../checkboxFieldFormItem';
 
-type Data = {
-  fruit: boolean;
-};
+import { BasicFormData, FormPaths } from '../../pockets/form/form.types';
 
 const Test = () => {
   const [formRef, myForm] = useForm();
 
-  const [formData, setFormData] = useState<Data>();
+  const [formData, setFormData] = useState<BasicFormData>();
 
   function handleShowFormDataBtuClick() {
-    setFormData(myForm?.getValues() as Data);
+    setFormData(myForm?.getValues() as BasicFormData);
   }
 
   function handleSetFruitBtuClick() {
-    myForm?.setValueByPath('fruit', false);
+    myForm?.setValueByPath(FormPaths.fruit, false);
   }
 
   return (
     <>
       <Form ref={formRef}>
         <FormLabel label="Fruit:">
-          <CheckboxFormItem
+          <NativeCheckbox
             data-testid="fruit"
-            path="fruit"
-            defaultChecked={false}
+            path={FormPaths.fruit}
+            initialValue={false}
           />
         </FormLabel>
       </Form>
