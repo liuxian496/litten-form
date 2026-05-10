@@ -83,14 +83,15 @@ export default defineConfig({
     ],
     coverage: {
       provider: 'istanbul',
-      reporter: ['text', 'html', 'clover', 'json-summary'],
+      reporter: ['text', 'html', 'clover', 'json-summary', 'lcov'],
       include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'src/**/*.stories.{ts,tsx}',
-        'src/stories/**/*.{ts,tsx}',
+        'src/stories',
+        'src/**/*.test.{ts,tsx}',
+        'src/test/**/*.{ts,tsx}',
         'src/**/*.types.ts',
         'src/*.ts',
-        'src/pockets/**/*.{ts,tsx}',
+        'src/pockets',
       ],
       thresholds: {
         statements: 100,
