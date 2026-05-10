@@ -1,6 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 import { formInjector } from '../inject';
-import { FormItemValidation, FormItemValue } from './form.types';
+import { warn } from '../util';
+import { commonValidationAssertNotFound } from './entries';
+import type { FormItemValidation, FormItemValue } from './form.types';
 import { BaseValidation } from './formBase';
 
 /**
@@ -23,19 +25,29 @@ export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
     const max = validations.length;
 
     for (let i = 0; i < max; i++) {
-      const { helpInfo, type, validationAssert } = validations[i];
+      const { helpInfo: info, type, validationAssert } = validations[i];
+
+      // 优先使用验证规则中提供的帮助信息，如果没有，则尝试从 formInjector 获取默认帮助信息
+      const helpInfo =
+        info ??
+        (formInjector.getDefaultHelperInfo
+          ? formInjector.getDefaultHelperInfo(type)
+          : undefined);
 
       if (type === BaseValidation.Customize) {
         result =
           validationAssert?.(value as FormItemValue) === false
             ? (helpInfo as T)
             : undefined;
-      } else if (formInjector.extendVerifyFormItem) {
+      } else if (formInjector.commonValidationAssert) {
         result =
-          formInjector.extendVerifyFormItem(value as FormItemValue, type) ===
+          formInjector.commonValidationAssert(value as FormItemValue, type) ===
           false
             ? (helpInfo as T)
             : undefined;
+      } else {
+        // 没有提供通用的验证断言函数，无法进行验证，发出警告
+        warn(commonValidationAssertNotFound());
       }
 
       if (result !== undefined) {

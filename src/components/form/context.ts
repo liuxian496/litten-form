@@ -1,5 +1,9 @@
 import { createContext } from 'react';
-import { FormContextProps, FormItemRegister, FormRegister } from './form.types';
+import type {
+  FormContextProps,
+  FormItemRegister,
+  FormRegister,
+} from './form.types';
 
 /**
  * 用于管理表单状态和操作的 React Context

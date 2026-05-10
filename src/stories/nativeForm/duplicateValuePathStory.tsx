@@ -1,19 +1,19 @@
-import { expect, within } from '@storybook/test';
+import { expect, within } from 'storybook/test';
 
-import { FormStory } from '../../stories/form.stories';
+import { FormStory } from '../nativeForm.stories';
 
 import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
-import { TextFieldFormItem } from '../textFieldFormItem';
+import { FormPaths } from '../../pockets/form/form.types';
+import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
 
 const Test = () => {
   const [formRef] = useForm();
 
   return (
     <Form ref={formRef}>
-      <TextFieldFormItem path="name" data-testid="nameInput" />
-      <div style={{ marginBottom: '10px' }}></div>
-      <TextFieldFormItem path="name" data-testid="nameInput" />
+      <NativeTextField path={FormPaths.name} />
+      <NativeTextField path={FormPaths.name} />
     </Form>
   );
 };

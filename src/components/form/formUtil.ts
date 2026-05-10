@@ -1,6 +1,12 @@
 import { warn } from '../util';
 import {
+  setMethodNotFound,
+  setValuesFirstParamNotArray,
+  valuePathNotFoundEntry,
+} from './entries';
+import type {
   FormArgs,
+  FormHelperInfo,
   FormItemValue,
   FormRegister,
   FormValues,
@@ -52,7 +58,7 @@ export function getValueByPath(path: string, formRegister: FormRegister) {
  */
 export function setHelpTextByPath(
   path: string,
-  helperText: string | JSX.Element | undefined,
+  helperText: FormHelperInfo,
   formRegister: FormRegister
 ) {
   const formItemRegister = formRegister[path];
@@ -60,9 +66,7 @@ export function setHelpTextByPath(
   if (formItemRegister !== undefined) {
     formItemRegister.setHelperText?.(helperText);
   } else {
-    warn(
-      `Can not find the valuePath "${path}" in form. Please check if the form item is registered.`
-    );
+    warn(valuePathNotFoundEntry(path));
   }
 }
 
@@ -80,16 +84,21 @@ export function setValues(args: FormArgs, formRegister: FormRegister) {
       if (set) {
         set(value);
         validate?.(value);
+      } else {
+        warn(setMethodNotFound());
       }
     });
+  } else {
+    warn(setValuesFirstParamNotArray());
   }
 }
 
 /**
- * 通过属性路径设置表单项对应控件的值的方法
- * @param path 表单项的值在表单数据中的属性路径
- * @param value 表单项对应控件的值
- * @param {FormRegister} formRegister 表单注册器
+ * 通过属性路径设置指定表单项的值，并自动触发该表单项的验证逻辑。
+ *
+ * @param path 表单项的唯一路径（valuePath）
+ * @param value 需要设置的新值
+ * @param formRegister 当前表单的注册器对象
  */
 export function setValueByPath(
   path: string,
@@ -103,10 +112,10 @@ export function setValueByPath(
     if (set) {
       set(value);
       validate?.(value);
+    } else {
+      warn(setMethodNotFound());
     }
   } else {
-    warn(
-      `Can not find the valuePath "${path}" in form. Please check if the form item is registered.`
-    );
+    warn(valuePathNotFoundEntry(path));
   }
 }

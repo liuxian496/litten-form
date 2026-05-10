@@ -1,12 +1,13 @@
 import {
-  Dispatch,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
+  type Dispatch,
+  type SetStateAction,
 } from 'react';
+
 import { FormContext } from './context';
-import { FormHelperInfo } from './form.types';
+import type { FormHelperInfo } from './form.types';
 
 /**
  *  提供一个自定义hook, 用来实现表单项的受控逻辑
@@ -24,8 +25,8 @@ import { FormHelperInfo } from './form.types';
 export function useFormItemValue<T, V = string>(
   valuePath: string,
   initialValue?: T,
-  onGetErrorMessage?: (value: V) => FormHelperInfo,
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>
+  onGetErrorMessage?: (value: V) => FormHelperInfo | undefined,
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>
 ) {
   const formContext = useContext(FormContext);
 

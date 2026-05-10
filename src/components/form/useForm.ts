@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FormRef } from './form.types';
+import type { FormRef } from './form.types';
 
 /**
  * 获取表单ref的自定义hook
@@ -16,11 +16,7 @@ export function useForm() {
   const [myForm, setMyForm] = useState<FormRef | undefined>();
 
   useEffect(() => {
-    const current = ref.current;
-    if (current) {
-      setMyForm(current);
-    }
-
+    setMyForm(ref.current);
     return () => {
       ref.current = undefined;
     };
