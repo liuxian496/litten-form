@@ -15,7 +15,17 @@ const dirname =
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), dts(), visualizer()],
+  plugins: [
+    react(),
+    dts({
+      entryRoot: 'src',
+      include: ['src/index.ts', 'src/components'],
+      outDir: 'dist',
+      insertTypesEntry: true,
+      tsconfigPath: path.join(dirname, 'tsconfig.app.json'),
+    }),
+    visualizer(),
+  ],
   build: {
     copyPublicDir: false,
     cssCodeSplit: true,
