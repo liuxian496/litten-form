@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta } from '@storybook/react-vite';
 
 import { Form } from '../components/form/form';
 
@@ -28,8 +28,6 @@ export default {
     },
   },
 } as Meta<typeof Form>;
-
-export type FormStory = StoryObj<typeof Form>;
 
 export const TextField = TextFieldTest;
 export const Checkbox = CheckboxTest;

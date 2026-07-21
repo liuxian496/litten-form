@@ -2,7 +2,9 @@ import type { ChangeEvent } from 'react';
 
 import { Checkbox } from 'litten';
 import type { LittenEvent } from 'litten-hooks/dist/control/event/littenEvent.types';
+
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
+
 import type { LittenCheckboxProps } from './littenCheckbox.type';
 
 export const LittenCheckbox = ({

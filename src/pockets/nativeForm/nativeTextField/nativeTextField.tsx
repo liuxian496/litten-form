@@ -1,8 +1,10 @@
 import { type ChangeEvent } from 'react';
+
 import { type FormHelperInfo } from '../../../components/form/form.types';
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 import { useHelperInfo } from '../../../components/form/useHelperInfo';
 import type { ValidationType } from '../../form/validation';
+
 import type { NativeTextFieldProps } from './nativeTextField.types';
 import { getVisualStates, PartsVisualStates } from './nativeTextFieldBase';
 

@@ -1,11 +1,12 @@
 import { expect, within } from 'storybook/test';
 
-import { FormStory } from '../nativeForm.stories';
+
+import { FormPaths } from '../../pockets/form/form.types';
+import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
 
 import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
-import { FormPaths } from '../../pockets/form/form.types';
-import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
 const Test = () => {
   const [formRef] = useForm();

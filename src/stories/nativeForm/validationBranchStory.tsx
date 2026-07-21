@@ -1,8 +1,9 @@
 import { expect } from 'storybook/test';
 
+
 import { ValidationMode } from '../../components/form/form.types';
 import { validate } from '../../components/validation';
-import { FormStory } from '../nativeForm.stories';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
 const Test = () => {
   return <div>测试验证相关方法的分支逻辑</div>;

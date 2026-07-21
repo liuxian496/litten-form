@@ -1,9 +1,6 @@
 import { expect, spyOn, userEvent } from 'storybook/test';
 
-import { commonValidationAssertNotFound } from '../../components/form/entries';
-import { Form } from '../../components/form/form';
-import { useForm } from '../../components/form/useForm';
-import { initLittenForm } from '../../components/inject';
+
 import { FormPaths } from '../../pockets/form';
 import {
   commonValidationAssert,
@@ -11,7 +8,12 @@ import {
   ValidationType,
 } from '../../pockets/form/validation';
 import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
-import { FormStory } from '../nativeForm.stories';
+
+import { commonValidationAssertNotFound } from '../../components/form/entries';
+import { Form } from '../../components/form/form';
+import { useForm } from '../../components/form/useForm';
+import { initLittenForm } from '../../components/inject';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
 const Test = () => {
   const [formRef, basicForm] = useForm();

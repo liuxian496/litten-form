@@ -1,5 +1,6 @@
-import type { TextFieldValue } from 'litten-hooks/dist/control/event/littenEvent.types';
 import type { TextFieldProps } from 'litten/dist/components/textField/textField.types';
+import type { TextFieldValue } from 'litten-hooks/dist/control/event/littenEvent.types';
+
 import type {
   FormHelperInfo,
   FormItemProps,

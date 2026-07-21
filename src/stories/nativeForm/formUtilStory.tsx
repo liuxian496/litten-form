@@ -1,13 +1,15 @@
+import { useState } from 'react';
+
 import { expect, userEvent, within } from 'storybook/test';
 
-import { FormStory } from '../nativeForm.stories';
 
-import { useState } from 'react';
+import { FormPaths, ValidationType } from '../../pockets/form';
+import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
+
 import { Form } from '../../components/form/form';
 import { ValidationMode } from '../../components/form/form.types';
 import { useForm } from '../../components/form/useForm';
-import { FormPaths, ValidationType } from '../../pockets/form';
-import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
 const congratulatoryMessage = '恭喜达到百万年薪';
 

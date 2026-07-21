@@ -1,5 +1,11 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 
+import { ExceptionBoundary } from 'exception-boundary';
+import { ControlType } from 'litten-hooks/dist/enum';
+
+import { validate } from '../validation';
+
+import { FormContext, initContext } from './context';
 import {
   ValidationMode,
   type FormArgs,
@@ -8,11 +14,6 @@ import {
   type FormProps,
   type FormRegister,
 } from './form.types';
-
-import { ExceptionBoundary } from 'exception-boundary';
-import { ControlType } from 'litten-hooks/dist/enum';
-import { validate } from '../validation';
-import { FormContext, initContext } from './context';
 import { getVisualStates } from './formBase';
 import {
   getValueByPath,

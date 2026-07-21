@@ -1,5 +1,6 @@
 import { expect, spyOn } from 'storybook/test';
 
+
 import {
   setMethodNotFound,
   setValuesFirstParamNotArray,
@@ -12,7 +13,7 @@ import {
   setValueByPath,
   setValues,
 } from '../../components/form/formUtil';
-import { FormStory } from '../nativeForm.stories';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
 const Test = () => {
   return <div>测试FormUtil的分支逻辑</div>;

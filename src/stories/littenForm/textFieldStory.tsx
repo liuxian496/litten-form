@@ -2,20 +2,18 @@ import { useState } from 'react';
 
 import { Button } from 'litten/dist/button';
 import { Mode } from 'litten/dist/enum';
+import { FormLabel } from 'litten/dist/formLabel';
 import { StackPanel } from 'litten/dist/stackPanel';
-
+import { Placement } from 'litten-hooks';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { FormStory } from '../littenForm.stories';
+import { type FormStory } from '../littenForm.stories';
+
+import { type BasicFormData } from '../../pockets/form';
+import { LittenTextField } from '../../pockets/littenForm/littenTextField';
 
 import { Form } from '../../components/form/form';
-
 import { useForm } from '../../components/form/useForm';
-
-import { Placement } from 'litten-hooks';
-import { FormLabel } from 'litten/dist/formLabel';
-import { BasicFormData } from '../../pockets/form';
-import { LittenTextField } from '../../pockets/littenForm/littenTextField';
 
 const Test = () => {
   const [formRef, myForm] = useForm();

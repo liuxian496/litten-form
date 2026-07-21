@@ -59,7 +59,6 @@ export default defineConfig([
             'internal',
             'parent',
             'sibling',
-            'type',
             'index',
           ],
           'newlines-between': 'always',

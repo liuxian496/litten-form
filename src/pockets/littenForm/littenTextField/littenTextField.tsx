@@ -1,7 +1,6 @@
 import type { ChangeEvent, FocusEvent } from 'react';
 
 import { TextField } from 'litten/dist/textField';
-
 import { ControlType, getDefaultValueByDisplayName } from 'litten-hooks';
 import type {
   LittenEvent,
@@ -12,6 +11,7 @@ import { type FormHelperInfo } from '../../../components/form/form.types';
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 import { useHelperInfo } from '../../../components/form/useHelperInfo';
 import type { ValidationType } from '../../form/validation';
+
 import type { LittenTextFieldProps } from './littenTextField.types';
 
 export const LittenTextField = ({

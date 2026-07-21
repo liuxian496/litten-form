@@ -1,15 +1,14 @@
 import { useState } from 'react';
 
-import { NativeCheckbox } from '../../pockets/nativeForm/nativeCheckbox';
-
 import { expect, userEvent, within } from 'storybook/test';
 
-import { FormStory } from '../nativeForm.stories';
+
+import { type BasicFormData, FormPaths } from '../../pockets/form/form.types';
+import { NativeCheckbox } from '../../pockets/nativeForm/nativeCheckbox';
 
 import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
-
-import { BasicFormData, FormPaths } from '../../pockets/form/form.types';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
 const Test = () => {
   const [formRef, basicForm] = useForm();
