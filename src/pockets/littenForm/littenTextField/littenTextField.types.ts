@@ -13,6 +13,6 @@ export interface LittenTextFieldProps
     Omit<TextFieldProps, 'onBlur'> {
   onBlur?: (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
-    validationResult: FormHelperInfo
+    validationResult?: FormHelperInfo
   ) => void;
 }
