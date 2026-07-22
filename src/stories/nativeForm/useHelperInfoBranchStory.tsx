@@ -1,6 +1,5 @@
 import { expect, spyOn, userEvent } from 'storybook/test';
 
-
 import { FormPaths } from '../../pockets/form';
 import {
   commonValidationAssert,

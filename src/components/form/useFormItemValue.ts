@@ -26,7 +26,8 @@ export function useFormItemValue<T, V = string>(
   valuePath: string,
   initialValue?: T,
   onGetErrorMessage?: (value: V) => FormHelperInfo | undefined,
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>,
+  fieldRef?: React.RefObject<HTMLElement>
 ) {
   const formContext = useContext(FormContext);
 
@@ -49,8 +50,16 @@ export function useFormItemValue<T, V = string>(
       validate: <T>(newValue: T) =>
         onGetErrorMessage?.(newValue as unknown as V),
       setHelperText: setHelperText,
+      fieldRef,
     });
-  }, [formContext, onGetErrorMessage, value, valuePath, setHelperText]);
+  }, [
+    formContext,
+    onGetErrorMessage,
+    value,
+    valuePath,
+    setHelperText,
+    fieldRef,
+  ]);
 
   return [value as T, setValue] as [T, Dispatch<SetStateAction<T>>];
 }

@@ -7,13 +7,12 @@ import { StackPanel } from 'litten/dist/stackPanel';
 import { Placement } from 'litten-hooks';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { type FormStory } from '../littenForm.stories';
-
 import { type BasicFormData } from '../../pockets/form';
 import { LittenTextField } from '../../pockets/littenForm/littenTextField';
 
 import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
+import { type FormStory } from '../littenForm/littenFormStory.types';
 
 const Test = () => {
   const [formRef, myForm] = useForm();

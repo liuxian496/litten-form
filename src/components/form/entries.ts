@@ -30,3 +30,12 @@ export function setMethodNotFound() {
 export function commonValidationAssertNotFound() {
   return 'Can not find commonValidationAssert in formInjector, please provide it to support validation types other than Customize.';
 }
+
+/**
+ * 当尝试聚焦一个不存在的表单项时的警告信息
+ * @param path 表单项的唯一路径（valuePath）
+ * @returns 警告信息字符串
+ */
+export function focusNotFound(path: string) {
+  return `The fieldRef for path "${path}" does not have a focus method.`;
+}

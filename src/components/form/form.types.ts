@@ -8,7 +8,6 @@ import type {
 
 import { BaseValidation } from './formBase';
 
-
 /**
  * 表单组件属性
  * @property children - 表单组件的子组件
@@ -69,12 +68,23 @@ export interface FormValues {
 }
 
 /**
+ * 可聚焦的表单控件接口
+ * 任何实现了该接口的表单控件都应提供一个 focus 方法，用于将焦点设置到该控件上
+ * 这对于表单验证失败时自动聚焦非常有用
+ * @property focus - 将焦点设置到该控件的方法
+ */
+export interface FocusableField {
+  focus: () => void;
+}
+
+/**
  * 表单项注册器
  * @property path - 表单项的值路径，值路径需要唯一
  * @property get - 获取表单项值的方法
  * @property set - 设置表单项值的方法
  * @property validate - 可选的验证函数，接受表单项值作为参数，返回一个字符串或JSX元素表示验证结果
  * @property setHelperText - 可选的设置帮助信息的方法，接受一个字符串或JSX元素作为参数
+ * @property fieldRef - 可选的表单控件引用，用于访问控件的实例方法，如 focus
  */
 export interface FormItemRegister {
   path: string;
@@ -82,6 +92,7 @@ export interface FormItemRegister {
   set?: <T>(value: T) => void;
   validate?: <V>(value: V) => FormHelperInfo | undefined;
   setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>;
+  fieldRef?: React.RefObject<FocusableField | null>;
 }
 
 /**
@@ -256,6 +267,12 @@ export interface FormRef {
    * @returns 表单验证结果数组
    */
   validate: () => FormItemHelper[];
+  /**
+   * 通过属性路径聚焦表单项对应控件的方法
+   * @param path 表单项的值路径
+   * @returns void
+   */
+  focusFieldByPath: (path: string) => void;
 }
 
 /**

@@ -1,12 +1,13 @@
 import { expect, spyOn } from 'storybook/test';
 
-
 import {
+  focusNotFound,
   setMethodNotFound,
   setValuesFirstParamNotArray,
   valuePathNotFoundEntry,
 } from '../../components/form/entries';
 import {
+  focusFieldByPath,
   getValueByPath,
   getValues,
   setHelpTextByPath,
@@ -127,6 +128,32 @@ export const FormUtilBranchTest: FormStory = {
 
           await expect(warnSpy).toHaveBeenCalledWith(
             `[litten warning]: ${setMethodNotFound()}`
+          );
+        }
+      );
+
+      await step(
+        `In "focusFieldByPath", When form item do not have a focusable fieldRef, should warn ${focusNotFound('name')}`,
+        async () => {
+          focusFieldByPath('name', {
+            name: {
+              path: 'name',
+            },
+          });
+
+          await expect(warnSpy).toHaveBeenCalledWith(
+            `[litten warning]: ${focusNotFound('name')}`
+          );
+        }
+      );
+
+      await step(
+        `In "focusFieldByPath", When formRegister do not have the path, should warn ${valuePathNotFoundEntry('name')}`,
+        async () => {
+          focusFieldByPath('name', {});
+
+          await expect(warnSpy).toHaveBeenCalledWith(
+            `[litten warning]: ${valuePathNotFoundEntry('name')}`
           );
         }
       );

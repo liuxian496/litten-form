@@ -4,6 +4,7 @@ import { Form } from '../components/form/form';
 
 import { CheckboxTest } from './nativeForm/checkboxStory';
 import { DuplicateValuePathTest } from './nativeForm/duplicateValuePathStory';
+import { FocusTest } from './nativeForm/focusStory';
 import { FormUtilBranchTest } from './nativeForm/formUtilBranchStory';
 import { FormUtilTest } from './nativeForm/formUtilStory';
 import { MultiFormTest } from './nativeForm/multiFormStory';
@@ -42,3 +43,4 @@ export const UseHelperInfoBranch = {
   ...UseHelperInfoBranchTest,
 };
 export const MultiForm = MultiFormTest;
+export const Focus = FocusTest;

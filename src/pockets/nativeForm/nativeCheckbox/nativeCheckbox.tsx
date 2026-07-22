@@ -1,8 +1,8 @@
-import type { ChangeEvent } from 'react';
+import { useRef, type ChangeEvent } from 'react';
 
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 
-import type { NativeCheckboxProps } from './littenCheckbox.type';
+import type { NativeCheckboxProps } from './littenCheckbox.types';
 
 export const NativeCheckbox = ({
   initialValue = false,
@@ -11,7 +11,15 @@ export const NativeCheckbox = ({
   onChange,
   ...props
 }: NativeCheckboxProps) => {
-  const [value, setValue] = useFormItemValue<boolean>(path, initialValue);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [value, setValue] = useFormItemValue<boolean>(
+    path,
+    initialValue,
+    undefined,
+    undefined,
+    inputRef
+  );
 
   function handleChange(e: ChangeEvent<HTMLInputElement>): void {
     setValue(e.target.checked === true);
@@ -28,6 +36,7 @@ export const NativeCheckbox = ({
             type="checkbox"
             checked={value}
             onChange={handleChange}
+            ref={inputRef}
           />
         </label>
       </div>

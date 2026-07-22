@@ -16,6 +16,7 @@ import {
 } from './form.types';
 import { getVisualStates } from './formBase';
 import {
+  focusFieldByPath,
   getValueByPath,
   getValues,
   setHelpTextByPath,
@@ -66,6 +67,9 @@ export const Form = forwardRef(
         },
         validate: () => {
           return validate(formRegister, validationMode);
+        },
+        focusFieldByPath: (path: string) => {
+          focusFieldByPath(path, formRegister);
         },
       };
     }, [formRegister, validationMode]);
