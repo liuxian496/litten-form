@@ -219,7 +219,6 @@ export interface FormItemHelper {
  * @property getValueByPath - 通过属性路径获取表单项对应控件的值的方法，接受一个字符串类型的路径作为参数，返回对应的值
  * @property setValueByPath - 通过属性路径设置表单项对应控件的值的方法，接受一个字符串类型的路径和一个值作为参数
  * @property setHelpTextByPath - 通过属性路径设置表单项的帮助信息的方法，接受一个字符串类型的路径和一个错误消息（字符串或JSX元素）作为参数
- * @property clear - 将所有表单项的值设置成undefined
  */
 export interface FormRef {
   /**
@@ -257,11 +256,6 @@ export interface FormRef {
    * @returns void
    */
   setHelpTextByPath: (path: string, helpText: FormHelperInfo) => void;
-  /**
-   * 清空表单所有项的值
-   * @returns void
-   */
-  clear: () => void;
   /**
    * 表单验证
    * @returns 表单验证结果数组
