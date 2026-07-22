@@ -15,6 +15,7 @@ const congratulatoryMessage = '恭喜达到百万年薪';
 const salaryMustBeNumberGreaterThanOneMillion =
   'Salary must be a number greater than 1,000,000.';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   const [formRef, basicForm] = useForm();
   const [msg, setMsg] = useState('');
