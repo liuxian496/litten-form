@@ -4,7 +4,7 @@
  * @returns 警告信息字符串
  */
 export function valuePathNotFoundEntry(path: string) {
-  return `Can not find the valuePath "${path}" in form. Please check if the form item is registered.`;
+  return `Can not find the path "${path}" in form. Please check if the form item is registered.`;
 }
 
 /**
@@ -33,7 +33,7 @@ export function commonValidationAssertNotFound() {
 
 /**
  * 当尝试聚焦一个不存在的表单项时的警告信息
- * @param path 表单项的唯一路径（valuePath）
+ * @param path 表单项的唯一路径（path）
  * @returns 警告信息字符串
  */
 export function focusNotFound(path: string) {
