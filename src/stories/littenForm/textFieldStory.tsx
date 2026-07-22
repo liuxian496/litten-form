@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
+import { Placement } from 'litten-hooks';
 import { Button } from 'litten/dist/button';
 import { Mode } from 'litten/dist/enum';
 import { FormLabel } from 'litten/dist/formLabel';
 import { StackPanel } from 'litten/dist/stackPanel';
-import { Placement } from 'litten-hooks';
 import { expect, userEvent, within } from 'storybook/test';
 
-import { type BasicFormData } from '../../pockets/form';
+import { FormPaths, type BasicFormData } from '../../pockets/form';
 import { LittenTextField } from '../../pockets/littenForm/littenTextField';
 
 import { Form } from '../../components/form/form';
@@ -26,7 +26,10 @@ const Test = () => {
   }
 
   function handleClearClick() {
-    myForm?.clear();
+    myForm?.setValues([
+      { path: FormPaths.name, value: '' },
+      { path: FormPaths.animation, value: '' },
+    ]);
   }
 
   return (
@@ -38,12 +41,15 @@ const Test = () => {
           alignItems="flex-start"
         >
           <FormLabel label="Name:" labelPlacement={Placement.top}>
-            <LittenTextField data-testid="nameTextField" path="name" />
+            <LittenTextField
+              data-testid="nameTextField"
+              path={FormPaths.name}
+            />
           </FormLabel>
           <FormLabel label="Animation:" labelPlacement={Placement.top}>
             <LittenTextField
               data-testid="animationTextField"
-              path="animation"
+              path={FormPaths.animation}
               initialValue="Tom & Jerry"
             />
           </FormLabel>
@@ -58,7 +64,7 @@ const Test = () => {
   );
 };
 
-export const DefaultTest: FormStory = {
+export const TextFieldTest: FormStory = {
   parameters: {
     controls: { hideNoControlsWarning: true },
   },
