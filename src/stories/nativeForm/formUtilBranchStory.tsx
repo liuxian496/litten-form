@@ -16,6 +16,7 @@ import {
 } from '../../components/form/formUtil';
 import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   return <div>测试FormUtil的分支逻辑</div>;
 };

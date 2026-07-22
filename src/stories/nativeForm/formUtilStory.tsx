@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { expect, userEvent, within } from 'storybook/test';
 
-
 import { FormPaths, ValidationType } from '../../pockets/form';
 import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
 

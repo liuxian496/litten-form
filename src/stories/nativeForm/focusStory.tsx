@@ -8,6 +8,7 @@ import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
 
 import type { FormStory } from './nativeFormStory.types';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   const [formRef, basicForm] = useForm();
 

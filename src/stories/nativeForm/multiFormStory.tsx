@@ -1,6 +1,3 @@
-import { within } from 'storybook/test';
-
-
 import { FormPaths, ValidationType } from '../../pockets/form';
 import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
 
@@ -8,6 +5,7 @@ import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
 import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   const [nameFormRef, nameForm] = useForm();
   const [salaryFormRef, salaryForm] = useForm();
@@ -68,7 +66,4 @@ export const MultiFormTest: FormStory = {
     controls: { hideNoControlsWarning: true },
   },
   render: () => <Test />,
-  play: async ({ canvasElement, step }) => {
-    const canvas = within(canvasElement);
-  },
 };

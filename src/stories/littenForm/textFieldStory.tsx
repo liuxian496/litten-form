@@ -14,6 +14,7 @@ import { Form } from '../../components/form/form';
 import { useForm } from '../../components/form/useForm';
 import { type FormStory } from '../littenForm/littenFormStory.types';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   const [formRef, myForm] = useForm();
 

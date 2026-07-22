@@ -14,6 +14,7 @@ import { useForm } from '../../components/form/useForm';
 import { initLittenForm } from '../../components/inject';
 import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   const [formRef, basicForm] = useForm();
 

@@ -1,6 +1,5 @@
 import { expect, userEvent, within } from 'storybook/test';
 
-
 import { FormPaths, ValidationType } from '../../pockets/form';
 import { NativeTextField } from '../../pockets/nativeForm/nativeTextField';
 
@@ -11,6 +10,7 @@ import { type FormStory } from '../nativeForm/nativeFormStory.types';
 const salaryMustBeNumberGreaterThanOneMillion =
   'Salary must be a number greater than 1,000,000.';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   const [formRef, basicForm] = useForm();
 
