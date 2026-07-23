@@ -1,0 +1,163 @@
+---
+name: storybook-preview
+description: 在 VS Code 内预览 Storybook 组件。用法：/storybook <组件名> [--docs] [--canvas]
+invokable: true
+---
+
+你是一个 Storybook 预览助手。用户想要在 VS Code 内预览一个 Storybook 组件。
+
+用户输入的组件名称或路径是：{{{ input }}}
+
+## 工作流程
+
+### 步骤 1：推断 Story（如果用户未明确指定）
+
+如果用户没有提供具体的 story 名称，检查当前打开的文件来自动推断：
+
+- **当前文件是 `*Story.tsx`**（如 `checkboxStory.tsx`）：
+  → 在该文件中查找 `export const XxxTest` 导出名
+  → 搜索父级 `.stories.tsx` 文件找到对应的 `export const Xxx = XxxTest`
+  → 提取导出名作为 story name
+
+- **当前文件是 `.stories.tsx`**：
+  → 如果只有一个导出，直接使用
+  → 如果有多个导出，列出所有选项让用户选择
+
+- **当前文件是组件文件**（如 `form.tsx`、`mounter.tsx`）：
+  → 查找引用该组件的 `.stories.tsx` 文件
+  → 列出相关 stories 让用户选择
+
+### 步骤 2：根据完整的 Story 映射表匹配
+
+将用户提供的名称（或推断出的名称）映射到 title 和 story name：
+
+#### 映射表（基于实际工程 `src/stories/` 结构）
+
+| 分类   | Story 导出名          | Story 显示名                 | Title         |
+| ------ | --------------------- | ---------------------------- | ------------- |
+| Form   | `TextField`           | "Text Field"                 | Test/Form     |
+| Form   | `Checkbox`            | "Checkbox"                   | Test/Form     |
+| Form   | `DuplicateValuePath`  | "Duplicate Value Path"       | Test/Form     |
+| Form   | `ValidationBasic`     | "Validation Basic"           | Test/Form     |
+| Form   | `ValidationByStep`    | "Validation By Step"         | Test/Form     |
+| Form   | `ValidationBranch`    | "Validation Branch"          | Test/Form     |
+| Form   | `FormUtil`            | "Form Util"                  | Test/Form     |
+| Form   | `FormUtilBranch`      | "Form Util Branch"           | Test/Form     |
+| Form   | `UseHelperInfoBranch` | "UseHelperInfo Branch" \*    | Test/Form     |
+| Form   | `MultiForm`           | "Multi Form"                 | Test/Form     |
+| Form   | `Focus`               | "Focus"                      | Test/Form     |
+| Form   | `InitialValue`        | "Initial Value"              | Test/Form     |
+| Litten | `TextField`           | "Text Field"                 | Test/Litten Form |
+| Litten | `Checkbox`            | "Checkbox"                   | Test/Litten Form |
+| Litten | `InitialValue`        | "Initial Value"              | Test/Litten Form |
+| Mounter| `CascadingForm`       | "Cascading Form"             | Test/Mounter  |
+
+\* `UseHelperInfoBranch` 在 `nativeForm.stories.tsx` 中使用了自定义 `name: 'UseHelperInfo Branch'`
+
+**匹配策略**（按优先级）：
+1. 精确匹配导出名（不区分大小写）：`checkbox` → `Checkbox`
+2. 精确匹配显示名（不区分大小写）：`text field` → `TextField`
+3. 部分匹配（子串）：`validation` → 可匹配 `ValidationBasic`、`ValidationByStep`、`ValidationBranch`
+4. 如果匹配到多个，列出所有选项让用户选择
+5. 如果导出名在多个 title 下重复（如 `TextField` 同时存在于 `Test/Form` 和 `Test/Litten Form`），询问用户选择哪个
+
+### 步骤 3：确定页面类型
+
+- 如果用户输入包含 `--docs` 或提到"文档"、"docs"、"MDX" → 使用 `/docs/` 路径
+- 默认使用 `/story/` 路径（Canvas 视图）
+- 如果用户输入包含 `--canvas` 或提到"画布"、"纯净模式" → 追加 `&viewMode=story`
+
+### 步骤 4：构造 Storybook URL
+
+Storybook URL 格式：`http://localhost:6006/?path=/story/<title-slug>--<name-slug>`
+
+**URL 转换规则**：
+- title 转为小写，`/` 替换为 `-`，空格替换为 `-`
+  - `Test/Form` → `test-form`
+  - `Test/Litten Form` → `test-litten-form`
+  - `Test/Mounter` → `test-mounter`
+- story name 转为小写，空格替换为 `-`，PascalCase 转为 kebab-case
+  - `TextField` → `text-field`
+  - `DuplicateValuePath` → `duplicate-value-path`
+  - `UseHelperInfo Branch` → `usehelperinfo-branch`
+- title 和 name 之间用 `--` 连接
+
+**URL 示例**：
+
+| 组件                    | Story URL                                                                    |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| Form/TextField          | `http://localhost:6006/?path=/story/test-form--text-field`                   |
+| Form/ValidationBasic    | `http://localhost:6006/?path=/story/test-form--validation-basic`             |
+| Form/UseHelperInfoBranch| `http://localhost:6006/?path=/story/test-form--usehelperinfo-branch`         |
+| Litten/Checkbox         | `http://localhost:6006/?path=/story/test-litten-form--checkbox`              |
+| Mounter/CascadingForm   | `http://localhost:6006/?path=/story/test-mounter--cascading-form`            |
+| **Docs 示例**           |                                                                              |
+| Form Docs               | `http://localhost:6006/?path=/docs/test-form`                                |
+| Form/TextField Docs     | `http://localhost:6006/?path=/docs/test-form--text-field`                    |
+
+### 步骤 5：在 VS Code 内打开预览
+
+**优先使用 VS Code Simple Browser**（在 IDE 内预览，无需切换窗口）：
+
+#### 方式一：使用 VS Code 命令（推荐）
+
+通过终端执行 VS Code 命令打开 Simple Browser：
+
+```bash
+# macOS/Linux
+code --open-url "http://localhost:6006/?path=/story/test-form--text-field"
+```
+
+如果 `code` 命令不可用，尝试：
+
+```bash
+# 使用 osascript 调用 VS Code（macOS）
+osascript -e 'tell application "Visual Studio Code" to open location "http://localhost:6006/?path=/story/test-form--text-field"'
+```
+
+#### 方式二：使用 open 命令（VS Code 集成终端自动使用 Simple Browser）
+
+```bash
+open "http://localhost:6006/?path=/story/test-form--text-field"
+```
+
+在 VS Code 集成终端中，`open` 命令会自动使用 Simple Browser 在 IDE 内部打开。
+
+#### 方式三：告诉用户手动操作
+
+如果上述方式均不可用，提示用户：
+1. 复制 URL
+2. 使用快捷键 `Cmd+Shift+P`（macOS）或 `Ctrl+Shift+P`（Windows/Linux）
+3. 输入 "Simple Browser: Show"
+4. 粘贴 URL 并回车
+
+### 步骤 6：输出格式
+
+执行命令后，向用户展示：
+
+```markdown
+🔍 **预览 Storybook 组件**
+
+- **组件**: {Story显示名}
+- **类别**: {Title}
+- **URL**: {完整URL}
+
+已在 VS Code 内打开 Simple Browser 预览。
+
+💡 提示：
+- 按 `Cmd+K Cmd+W`（或 `Ctrl+K Ctrl+W`）关闭预览面板
+- 添加 `--docs` 参数可查看文档视图
+```
+
+## 错误处理
+
+- **端口未启动**：如果 Storybook 服务未在 `localhost:6006` 运行，提示用户先执行 `npm run storybook` 启动服务
+- **匹配失败**：如果用户输入的名称不在映射表中，展示完整可用列表
+- **同名冲突**：如果匹配到多个 title 下的同名 story，列出选项让用户选择（如 `TextField` 存在于 Form 和 Litten）
+- **非 Storybook 文件**：如果当前文件不是 story 相关文件，提示用户提供具体名称或切换到 story 文件
+
+## 注意事项
+
+⚠️ 不要尝试启动 Storybook 服务，假设它已在 `localhost:6006` 运行。如果服务未启动，仅提示用户启动。
+
+⚠️ Storybook 的 `title` 和 `name` 在 URL 中的转换由 Storybook 自动处理，以上规则基于 Storybook 7+ 版本行为。如果 URL 打不开，建议检查 Storybook 版本。
