@@ -7,6 +7,7 @@ import { DuplicateValuePathTest } from './nativeForm/duplicateValuePathStory';
 import { FocusTest } from './nativeForm/focusStory';
 import { FormUtilBranchTest } from './nativeForm/formUtilBranchStory';
 import { FormUtilTest } from './nativeForm/formUtilStory';
+import { InitialValueTest } from './nativeForm/initialValueStory';
 import { MultiFormTest } from './nativeForm/multiFormStory';
 import { TextFieldTest } from './nativeForm/textFieldStory';
 import { UseHelperInfoBranchTest } from './nativeForm/useHelperInfoBranchStory';
@@ -44,3 +45,4 @@ export const UseHelperInfoBranch = {
 };
 export const MultiForm = MultiFormTest;
 export const Focus = FocusTest;
+export const InitialValue = InitialValueTest;

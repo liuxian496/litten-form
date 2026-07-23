@@ -61,7 +61,7 @@ export const NativeTextField = ({
             {...props}
             aria-label={label}
             type="text"
-            value={value}
+            value={value ?? ''}
             onChange={handleInputChange}
             onBlur={handleBlur}
             ref={inputRef}

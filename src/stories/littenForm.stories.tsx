@@ -3,6 +3,7 @@ import { type Meta } from '@storybook/react-vite';
 import { Form } from '../components/form/form';
 
 import { CheckboxTest } from './littenForm/checkboxStory';
+import { InitialValueTest } from './littenForm/initialValueStory';
 import { TextFieldTest } from './littenForm/textFieldStory';
 
 export default {
@@ -23,3 +24,4 @@ export default {
 
 export const TextField = TextFieldTest;
 export const Checkbox = CheckboxTest;
+export const InitialValue = InitialValueTest;

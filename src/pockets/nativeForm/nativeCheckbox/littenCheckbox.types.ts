@@ -1,6 +1,7 @@
 import type { InputHTMLAttributes } from 'react';
 
-import type { FormItemProps, ValidationType } from '@/pockets/form';
+import type { FormItemProps } from '@/components/form/form.types';
+import type { ValidationType } from '@/pockets/form';
 
 export interface NativeCheckboxProps
   extends
