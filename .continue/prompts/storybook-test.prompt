@@ -1,36 +1,39 @@
 ---
 name: storybook-test
-description: 'Run Storybook tests for current component or story. Use when: user wants to run storybook tests, test a story, test current component, run test for current file, mentions "npm run test-storybook", "run story test", "test this story", or is viewing a .stories.tsx or *Story.tsx file and wants to run tests.'
-argument-hint: 'Optional: specific story name or test name to run'
+description: '为当前组件或 story 运行 Storybook 测试。使用时机：用户想运行 storybook 测试、测试某个 story、测试当前组件、为当前文件运行测试，提到 "npm run test-storybook"、"run story test"、"test this story"，或正在查看 .stories.tsx / *Story.tsx 文件并想运行测试。'
+argument-hint: '可选：要运行的具体 story 名称或测试名称'
 ---
 
-# Run Storybook Test
+# 运行 Storybook 测试
 
-Intelligently locates and runs Storybook tests for the current component based on the open file.
+根据当前打开的文件，智能定位并运行该组件的 Storybook 测试。
 
-## When to Use
+## 使用时机
 
-- User wants to run tests for a Storybook story
-- Current file is a `*.stories.tsx` file (e.g., `src/stories/nativeForm.stories.tsx`)
-- Current file is a `*Story.tsx` implementation file (e.g., `src/stories/nativeForm/checkboxStory.tsx`)
-- User mentions: "run test", "test this", "test storybook", "run story test"
-- User wants to test a specific component
+- 用户想运行某个 Storybook story 的测试
+- 当前文件是 `*.stories.tsx` 文件（如 `src/stories/nativeForm.stories.tsx`）
+- 当前文件是 `*Story.tsx` 实现文件（如 `src/stories/nativeForm/checkboxStory.tsx`）
+- 用户提到："run test"、"test this"、"test storybook"、"run story test"
+- 用户想测试某个具体组件
 
-## How It Works
+## 工作原理
 
-1. **Identify current context**:
-   - Check if current file is a `.stories.tsx` file, a `*Story.tsx` implementation file, or a component file
-   - Extract relevant context
+1. **识别当前上下文**：
+   - 判断当前文件是 `.stories.tsx` 文件、`*Story.tsx` 实现文件，还是组件文件
+   - 提取相关上下文
 
-2. **Locate test names**:
-   - For `.stories.tsx` files: Extract all exported story names (constants exported from the file)
-   - For `*Story.tsx` files: Find the parent `.stories.tsx` that imports this story, identify the export name
-3. **Run the test**:
-   - Use command: `npx vitest run --project=storybook -t "Story Name"`
-   - Story name must match the name displayed in Storybook UI
-   - `run` mode is required so the process exits after execution (no watch mode)
+2. **定位测试名称**：
+   - 对于 `.stories.tsx` 文件：提取所有导出的 story 名称（从文件中导出的常量）
+   - 对于 `*Story.tsx` 文件：找到导入该 story 的父级 `.stories.tsx`，识别对应的导出名
+3. **运行测试**：
+   - 命令：`npx vitest run --project=storybook <stories文件路径> -t "<Story 名称>"`
+   - 关键：必须指定 stories 文件路径以限定范围，避免同名 story 冲突
+   - `<Story 名称>` 提取规则：
+     - 默认：导出常量名（PascalCase）转换为空格分隔（如 `TextField` → `"Text Field"`）
+     - 自定义：如果导出语句包含 `name: '...'` 属性，使用该属性值
+   - 必须使用 `run` 模式，保证进程执行完成后退出（非 watch 模式）
 
-## Project Structure
+## 项目结构
 
 ```
 src/
@@ -73,37 +76,54 @@ src/
 - **顶层** `*.stories.tsx`：设置 Meta（title, component），导入测试实现并以 `export const X = XTest` 形式重新导出
 - **底层** `*Story.tsx`：包含实际的组件渲染和 `play` 函数，用于 Storybook 交互测试
 
-## Command Pattern
+## 命令模式
 
 ```bash
-# 运行特定的 story 测试
-npx vitest run --project=storybook -t "Story Name"
+# 精确运行某个 .stories.tsx 文件中的某个 story（推荐：指定文件路径避免同名冲突）
+npx vitest run --project=storybook src/stories/nativeForm.stories.tsx -t "Text Field"
 
-# 运行某个 stories 文件下的所有测试
-npx vitest run --project=storybook -t "Test/Form"
+# 运行某个 .stories.tsx 文件下的所有测试（不指定 -t）
+npx vitest run --project=storybook src/stories/nativeForm.stories.tsx
 
 # 运行所有 storybook 测试
 npx vitest run --project=storybook
 ```
 
-## Examples
+> ⚠️ 不指定文件路径时，`-t` 子串匹配会搜索所有测试文件。`Checkbox`、`TextField`、`InitialValue` 同时存在于 `nativeForm` 和 `littenForm` 文件中，若只写 `-t "Checkbox"` 会同时运行两个文件下的同名测试。务必指定文件路径来精确定位。
 
-### Example 1: 从 *Story.tsx 实现文件运行
+## 示例
+
+### 示例 1：从 *Story.tsx 实现文件运行
 
 ```
 当前文件: src/stories/nativeForm/checkboxStory.tsx
 ↓
-查找导入此文件的 .stories.tsx: src/stories/nativeForm.stories.tsx
-  包含: import { CheckboxTest } from './nativeForm/checkboxStory';
+父级 .stories.tsx 文件: src/stories/nativeForm.stories.tsx
+  导入: import { CheckboxTest } from './nativeForm/checkboxStory';
 ↓
 定位导出: export const Checkbox = CheckboxTest;
 ↓
-转换 Story 名称: "Checkbox" → "Checkbox"
+PascalCase → 空格: "Checkbox"
 ↓
-运行: npx vitest run --project=storybook -t "Checkbox"
+运行: npx vitest run --project=storybook src/stories/nativeForm.stories.tsx -t "Checkbox"
 ```
 
-### Example 2: 从 .stories.tsx 文件运行（用户指定）
+### 示例 2：从组件文件运行
+
+```
+当前文件: src/pockets/nativeForm/nativeTextField/nativeTextField.tsx
+↓
+搜索使用该组件的 *Story.tsx → 发现 nativeForm/textFieldStory.tsx 导入 NativeTextField
+↓
+父级 .stories.tsx: src/stories/nativeForm.stories.tsx
+  导出: export const TextField = TextFieldTest;
+↓
+Story 名称: "Text Field"
+↓
+运行: npx vitest run --project=storybook src/stories/nativeForm.stories.tsx -t "Text Field"
+```
+
+### 示例 3：从 .stories.tsx 文件运行（用户指定）
 
 ```
 当前文件: src/stories/littenForm.stories.tsx
@@ -111,14 +131,12 @@ npx vitest run --project=storybook
 ↓
 用户说 "run checkbox"
 ↓
-构建可运行名称: "Text Field", "Checkbox", "Initial Value"
-↓
 匹配 "checkbox" → "Checkbox"
 ↓
-运行: npx vitest run --project=storybook -t "Checkbox"
+运行: npx vitest run --project=storybook src/stories/littenForm.stories.tsx -t "Checkbox"
 ```
 
-### Example 3: 从 .stories.tsx 文件运行（未指定）
+### 示例 4：从 .stories.tsx 文件运行（未指定）
 
 ```
 当前文件: src/stories/nativeForm.stories.tsx
@@ -129,7 +147,7 @@ npx vitest run --project=storybook
 列出所有可运行选项，让用户选择
 ```
 
-### Example 4: 自定义 name 属性
+### 示例 5：自定义 name 属性
 
 ```
 nativeForm.stories.tsx 中:
@@ -141,7 +159,7 @@ nativeForm.stories.tsx 中:
 Story 名称是 "UseHelperInfo Branch"（而非 "Use Helper Info Branch"）
 ```
 
-## Required Validation
+## 运行前验证
 
 运行命令前，必须验证请求的测试名称是否存在于对应的 `.stories.tsx` 文件中。
 
@@ -152,30 +170,28 @@ Story 名称是 "UseHelperInfo Branch"（而非 "Use Helper Info Branch"）
 3. 如果请求的名称不在允许列表中，不要运行测试。
 4. 返回包含有效选项的帮助信息，让用户选择。
 
-## Implementation Steps
+## 实现步骤
 
 1. **获取当前文件路径**
-   - 判断文件类型：`.stories.tsx`、`*Story.tsx` 还是其他文件
+   - 判断文件类型：`.stories.tsx`、`*Story.tsx` 还是其他文件（组件文件）
+   - 如果是组件文件，搜索 `src/stories/` 下的 `*Story.tsx` 文件，找到导入该组件的文件 → 定位到 `.stories.tsx`
 
-2. **对于 *Story.tsx 文件**：
-   - 提取文件中的导出名（如 `export const CheckboxTest`）
-   - 搜索 `src/stories/` 下的 `.stories.tsx` 文件，找到导入该变量的文件
-   - 在该 `.stories.tsx` 中找到对应的导出常量名（如 `export const Checkbox = CheckboxTest`）
-   - 将导出常量名转换为 Story 名称
+2. **确定 stories 文件路径**：
+   - 对于 `.stories.tsx` 文件：直接使用该文件路径
+   - 对于 `*Story.tsx` 文件：搜索 `src/stories/*.stories.tsx` 中包含 `from './对应文件夹/当前Story文件'` 导入语句的文件
+   - 对于组件文件：通过第三步分析确定
 
-3. **对于 .stories.tsx 文件**：
-   - 解析所有 `export const` 语句，提取导出名
+3. **定位 Story 名称**：
+   - 在 `.stories.tsx` 中找到对应的导出常量名（如 `export const Checkbox = CheckboxTest`）
    - 检查是否有自定义 `name:` 属性
-   - 转换为可运行的 Story 名称列表
-   - 如果用户提供了名称，验证后在列表中运行对应的测试
-   - 如果未提供名称且有多个导出，询问用户选择哪一个
+   - 将导出常量名转换为 Story 名称
 
 4. **验证用户输入**：
    - 将用户提供的名称与从 `.stories.tsx` 导出的名称列表进行模糊匹配（不区分大小写）
    - 如果匹配到多个或没有匹配，展示可用列表并停止
 
 5. **执行测试**：
-   - 运行 `npx vitest run --project=storybook -t "Story Name"`
+   - 运行 `npx vitest run --project=storybook <stories文件路径> -t "<Story 名称>"`
    - 显示结果
    - 确保进程在 `run` 模式下执行完成后退出
 
@@ -214,9 +230,10 @@ Story 名称是 "UseHelperInfo Branch"（而非 "Use Helper Info Branch"）
 | ---------------- | ----------------- |
 | `CascadingForm`  | "Cascading Form"  |
 
-## Error Handling
+## 错误处理
 
 - 如果当前文件不是 story 或 story 实现文件，搜索 `src/stories/` 下的相关文件
-- 如果导出名同时存在于多个 `.stories.tsx`（如 `TextField` 在 littenForm 和 nativeForm 中都存在），提示用户指定具体文件
+- 如果导出名同时存在于多个 `.stories.tsx`（如 `TextField`、`Checkbox`、`InitialValue` 在 littenForm 和 nativeForm 中都存在），务必指定文件路径来精确定位
 - 如果测试名称在映射的 `.stories.tsx` 中未找到，列出该文件中的可用测试并停止
-- 如果命令执行失败，显示错误并建议检查 Storybook 配置是否正确
+- 首次运行若报浏览器相关错误（Playwright 未安装 Chromium），提示执行 `npx playwright install chromium` 后重试
+- 如果命令执行失败，显示错误并建议检查 Storybook 配置（`vite.config.mts` 中的 `test.projects[0]`）是否正确

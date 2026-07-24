@@ -63,7 +63,7 @@ invokable: true
 
 ### 步骤 3：确定页面类型
 
-- 如果用户输入包含 `--docs` 或提到"文档"、"docs"、"MDX" → 使用 `/docs/` 路径
+- 如果用户输入包含 `--docs` 或提到"文档"、"docs"、"MDX" → 使用 `/docs/` 路径（Storybook 10 的 autodocs 页 slug 为 `<title-slug>--docs`）
 - 默认使用 `/story/` 路径（Canvas 视图）
 - 如果用户输入包含 `--canvas` 或提到"画布"、"纯净模式" → 追加 `&viewMode=story`
 
@@ -76,10 +76,10 @@ Storybook URL 格式：`http://localhost:6006/?path=/story/<title-slug>--<name-s
   - `Test/Form` → `test-form`
   - `Test/Litten Form` → `test-litten-form`
   - `Test/Mounter` → `test-mounter`
-- story name 转为小写，空格替换为 `-`，PascalCase 转为 kebab-case
-  - `TextField` → `text-field`
-  - `DuplicateValuePath` → `duplicate-value-path`
-  - `UseHelperInfo Branch` → `usehelperinfo-branch`
+- story name 取其显示名（`name` 覆盖值，或由导出名自动生成的显示名）后转为小写，将非字母数字字符（含空格）替换为 `-`；连续大写字母之间不额外插入 `-`
+  - `TextField` →（显示名 `Text Field`）→ `text-field`
+  - `DuplicateValuePath` →（显示名 `Duplicate Value Path`）→ `duplicate-value-path`
+  - `UseHelperInfo Branch`（`name` 覆盖值）→ `usehelperinfo-branch`
 - title 和 name 之间用 `--` 连接
 
 **URL 示例**：
@@ -92,42 +92,36 @@ Storybook URL 格式：`http://localhost:6006/?path=/story/<title-slug>--<name-s
 | Litten/Checkbox         | `http://localhost:6006/?path=/story/test-litten-form--checkbox`              |
 | Mounter/CascadingForm   | `http://localhost:6006/?path=/story/test-mounter--cascading-form`            |
 | **Docs 示例**           |                                                                              |
-| Form Docs               | `http://localhost:6006/?path=/docs/test-form`                                |
-| Form/TextField Docs     | `http://localhost:6006/?path=/docs/test-form--text-field`                    |
+| Form Docs (autodocs)    | `http://localhost:6006/?path=/docs/test-form--docs`                          |
+| Litten Form Docs        | `http://localhost:6006/?path=/docs/test-litten-form--docs`                   |
 
-### 步骤 5：在 VS Code 内打开预览
+### 步骤 5：在浏览器中打开预览
 
-**优先使用 VS Code Simple Browser**（在 IDE 内预览，无需切换窗口）：
+通过 Continue 的终端工具执行系统命令，用默认浏览器打开构造好的 URL。请根据操作系统选择命令：
 
-#### 方式一：使用 VS Code 命令（推荐）
+#### Windows（PowerShell / pwsh，本工程默认环境）
 
-通过终端执行 VS Code 命令打开 Simple Browser：
-
-```bash
-# macOS/Linux
-code --open-url "http://localhost:6006/?path=/story/test-form--text-field"
+```powershell
+Start-Process "http://localhost:6006/?path=/story/test-form--text-field"
 ```
 
-如果 `code` 命令不可用，尝试：
-
-```bash
-# 使用 osascript 调用 VS Code（macOS）
-osascript -e 'tell application "Visual Studio Code" to open location "http://localhost:6006/?path=/story/test-form--text-field"'
-```
-
-#### 方式二：使用 open 命令（VS Code 集成终端自动使用 Simple Browser）
+#### macOS
 
 ```bash
 open "http://localhost:6006/?path=/story/test-form--text-field"
 ```
 
-在 VS Code 集成终端中，`open` 命令会自动使用 Simple Browser 在 IDE 内部打开。
+#### Linux
 
-#### 方式三：告诉用户手动操作
+```bash
+xdg-open "http://localhost:6006/?path=/story/test-form--text-field"
+```
 
-如果上述方式均不可用，提示用户：
+#### 如需在 VS Code 内的 Simple Browser 预览（而非外部浏览器）
+
+提示用户手动操作：
 1. 复制 URL
-2. 使用快捷键 `Cmd+Shift+P`（macOS）或 `Ctrl+Shift+P`（Windows/Linux）
+2. 使用快捷键 `Ctrl+Shift+P`（Windows/Linux）或 `Cmd+Shift+P`（macOS）
 3. 输入 "Simple Browser: Show"
 4. 粘贴 URL 并回车
 
@@ -142,11 +136,11 @@ open "http://localhost:6006/?path=/story/test-form--text-field"
 - **类别**: {Title}
 - **URL**: {完整URL}
 
-已在 VS Code 内打开 Simple Browser 预览。
+已在默认浏览器中打开预览。
 
 💡 提示：
-- 按 `Cmd+K Cmd+W`（或 `Ctrl+K Ctrl+W`）关闭预览面板
 - 添加 `--docs` 参数可查看文档视图
+- 如需在 VS Code 内预览，可通过命令面板运行 "Simple Browser: Show" 并粘贴上面的 URL
 ```
 
 ## 错误处理
@@ -160,4 +154,4 @@ open "http://localhost:6006/?path=/story/test-form--text-field"
 
 ⚠️ 不要尝试启动 Storybook 服务，假设它已在 `localhost:6006` 运行。如果服务未启动，仅提示用户启动。
 
-⚠️ Storybook 的 `title` 和 `name` 在 URL 中的转换由 Storybook 自动处理，以上规则基于 Storybook 7+ 版本行为。如果 URL 打不开，建议检查 Storybook 版本。
+⚠️ Storybook 的 `title` 和 `name` 在 URL 中的转换由 Storybook 自动处理，以上规则基于本工程使用的 Storybook 10（`@storybook/react-vite@^10.3.3`）版本行为。如果 URL 打不开，建议对照 Storybook 侧边栏确认实际路径。
