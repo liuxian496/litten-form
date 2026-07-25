@@ -35,3 +35,6 @@ yarn.lock
 *.sw?
 
 *storybook.log
+
+#build
+*.tsbuildinfo
