@@ -10,7 +10,6 @@ import type {
   FormArgs,
   FormHelperInfo,
   FormItemHelper,
-  FormItemValue,
   FormRegister,
   FormValues,
 } from './form.types';
@@ -116,7 +115,7 @@ export function setValues(args: FormArgs, formRegister: FormRegister) {
  */
 export function setValueByPath(
   path: string,
-  value: FormItemValue,
+  value: unknown,
   formRegister: FormRegister
 ) {
   const formItemRegister = formRegister[path];

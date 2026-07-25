@@ -10,7 +10,6 @@ import {
   ValidationMode,
   type FormArgs,
   type FormHelperInfo,
-  type FormItemValue,
   type FormProps,
   type FormRegister,
 } from './form.types';
@@ -62,7 +61,7 @@ export const Form = forwardRef(
         setValues: (args: FormArgs) => {
           return setValues(args, formRegister);
         },
-        setValueByPath: (path: string, value: FormItemValue) => {
+        setValueByPath: (path: string, value: unknown) => {
           return setValueByPath(path, value, formRegister);
         },
         validate: () => {

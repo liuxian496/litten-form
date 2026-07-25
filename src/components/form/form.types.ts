@@ -1,10 +1,6 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
-import type {
-  LittenObjectValue,
-  LittenValue,
-  UserControlProps,
-} from 'litten-hooks/dist/control/userControl/userControl.types';
+import type { UserControlProps } from 'litten-hooks/dist/control/userControl/userControl.types';
 
 /**
  * 表单组件属性
@@ -21,11 +17,6 @@ export interface FormProps extends UserControlProps {
    */
   validationMode?: ValidationMode;
 }
-
-/**
- * 表单项数据
- */
-export type FormItemValue = LittenValue | LittenObjectValue;
 
 /**
  * 表单项验证后的提示信息，可以是string, JSX.Element，或者Undefined
@@ -63,7 +54,7 @@ export type ValidationMode =
  * 表单数据
  */
 export interface FormValues {
-  [index: string]: FormItemValue;
+  [index: string]: unknown;
 }
 
 /**
@@ -163,7 +154,7 @@ export interface FormItemProps<T, V> {
  */
 export interface FormItemArgs {
   path: string;
-  value: FormItemValue;
+  value: unknown;
 }
 
 /**
@@ -252,14 +243,14 @@ export interface FormRef {
    * @param path 表单项的值路径
    * @returns 表单项的值
    */
-  getValueByPath: (path: string) => FormItemValue;
+  getValueByPath: (path: string) => unknown;
   /**
    * 通过属性路径设置表单项对应控件的值的方法
    * @param path 表单项的值路径
    * @param value 表单项对应控件的值
    * @returns void
    */
-  setValueByPath: (path: string, value: FormItemValue) => FormHelperInfo;
+  setValueByPath: (path: string, value: unknown) => FormHelperInfo;
   /**
    * 通过属性路径设置表单项对应控件的帮助信息的方法
    * @param path 表单项的值路径
