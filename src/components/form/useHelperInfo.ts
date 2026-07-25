@@ -4,7 +4,7 @@ import { formInjector } from '../inject';
 import { warn } from '../util';
 
 import { commonValidationAssertNotFound } from './entries';
-import type { FormItemValidation } from './form.types';
+import type { FormHelperInfo, FormItemValidation } from './form.types';
 import { BaseValidationType } from './form.types';
 
 /**
@@ -15,15 +15,14 @@ import { BaseValidationType } from './form.types';
  * @template V - 需要校验的值类型，默认为 `string`
  * @param validations - 需要应用于值的校验规则数组。
  * @returns 返回一个元组，包含：
- *   - 帮助信息 (`T`),
  *   - 校验并更新帮助信息的函数 (`(value: V) => T`),
- *   - 更新帮助信息状态的set函数 (`Dispatch<SetStateAction<T | undefined>>`)。
+ *   - 更新帮助信息状态的set函数 (`Dispatch<SetStateAction<FormHelperInfo>>`)。
  */
-export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
-  const [currentHelperText, setCurrentHelperText] = useState<T>();
+export function useHelperInfo<V, VT>(validations: FormItemValidation<VT>[]) {
+  const [currentHelperText, setCurrentHelperText] = useState<FormHelperInfo>();
 
-  function verifyFormItem(value: V): T | undefined {
-    let result: T | undefined;
+  function verifyFormItem(value: V): FormHelperInfo {
+    let result: FormHelperInfo;
     let invalid = false;
     const max = validations.length;
 
@@ -53,7 +52,7 @@ export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
             ? formInjector.getDefaultHelperInfo(type)
             : undefined);
 
-        result = helpInfo as T;
+        result = helpInfo;
         break;
       }
     }
@@ -64,8 +63,8 @@ export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
   }
 
   return [currentHelperText, verifyFormItem, setCurrentHelperText] as [
-    T,
-    (value: V) => T | undefined,
-    Dispatch<SetStateAction<T | undefined>>,
+    FormHelperInfo,
+    (value: V) => FormHelperInfo,
+    Dispatch<SetStateAction<FormHelperInfo>>,
   ];
 }

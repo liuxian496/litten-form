@@ -28,9 +28,10 @@ export interface FormProps extends UserControlProps {
 export type FormItemValue = LittenValue | LittenObjectValue;
 
 /**
- * 表单项验证后的提示文字
+ * 表单项验证后的提示信息，可以是string, JSX.Element，或者Undefined
+ * 通常使用string就可以满足基本的验证提示需求
  */
-export type FormHelperInfo = string | JSX.Element;
+export type FormHelperInfo = string | JSX.Element | undefined;
 
 /**
  * 表单验证模式常量

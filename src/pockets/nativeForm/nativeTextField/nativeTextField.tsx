@@ -1,6 +1,5 @@
 import { useRef, type ChangeEvent } from 'react';
 
-import { type FormHelperInfo } from '../../../components/form/form.types';
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 import { useHelperInfo } from '../../../components/form/useHelperInfo';
 import type { ValidationType } from '../../form/validation';
@@ -22,7 +21,6 @@ export const NativeTextField = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [currentHelperText, verify, setCurrentHelperText] = useHelperInfo<
-    FormHelperInfo,
     string,
     ValidationType
   >(validations);

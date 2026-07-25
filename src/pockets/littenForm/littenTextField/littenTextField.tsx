@@ -7,7 +7,6 @@ import type {
   TextFieldValue,
 } from 'litten-hooks/dist/control/event/littenEvent.types';
 
-import { type FormHelperInfo } from '../../../components/form/form.types';
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 import { useHelperInfo } from '../../../components/form/useHelperInfo';
 import type { ValidationType } from '../../form/validation';
@@ -25,7 +24,7 @@ export const LittenTextField = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [currentHelperText, verifyFormItem, setCurrentHelperText] =
-    useHelperInfo<FormHelperInfo, string, ValidationType>(validations);
+    useHelperInfo<string, ValidationType>(validations);
 
   const [value, setValue] = useFormItemValue<TextFieldValue>(
     path,
