@@ -36,8 +36,8 @@
 function useFormItemValue<T, V = string>(
   valuePath: string,
   initialValue?: T,
-  onValidate?: (value: V) => FormHelperInfo | undefined,
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>,
+  onValidate?: (value: V) => FormHelperInfo,
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>,
   fieldRef?: React.RefObject<HTMLElement>
 ): [T, Dispatch<SetStateAction<T>>];
 ```

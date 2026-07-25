@@ -39,3 +39,7 @@ export function commonValidationAssertNotFound() {
 export function focusNotFound(path: string) {
   return `The fieldRef for path "${path}" does not have a focus method.`;
 }
+
+export function validationAssertNotFoundEntry(path: string) {
+  return `When using custom validation, validationAssert must be configured. The path missing this setting is: ${path}`;
+}

@@ -3,7 +3,10 @@ import { type Dispatch, type SetStateAction, useState } from 'react';
 import { formInjector } from '../inject';
 import { warn } from '../util';
 
-import { commonValidationAssertNotFound } from './entries';
+import {
+  commonValidationAssertNotFound,
+  validationAssertNotFoundEntry,
+} from './entries';
 import type { FormHelperInfo, FormItemValidation } from './form.types';
 import { BaseValidationType } from './form.types';
 
@@ -21,7 +24,15 @@ import { BaseValidationType } from './form.types';
 export function useHelperInfo<V, VT>(validations: FormItemValidation<VT>[]) {
   const [currentHelperText, setCurrentHelperText] = useState<FormHelperInfo>();
 
-  function verifyFormItem(value: V): FormHelperInfo {
+  /**
+   * 对表单项的值进行逐项校验，并返回第一个失败的校验对应的帮助信息。
+   * 同时将帮助信息同步到内部状态 `currentHelperText`。
+   *
+   * @param value - 待校验的值
+   * @param path  - 表单项路径（用于错误日志定位）
+   * @returns 如果校验失败，返回帮助信息（FormHelperInfo）；全部通过则返回 undefined。
+   */
+  function verifyFormItem(value: V, path: string): FormHelperInfo {
     let result: FormHelperInfo;
     let invalid = false;
     const max = validations.length;
@@ -33,7 +44,7 @@ export function useHelperInfo<V, VT>(validations: FormItemValidation<VT>[]) {
         if (validationAssert !== undefined) {
           invalid = validationAssert(value) === false;
         } else {
-          warn('validationAssert is Undefined');
+          warn(validationAssertNotFoundEntry(path));
           break;
         }
       } else if (formInjector.commonValidationAssert) {

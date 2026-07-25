@@ -80,8 +80,8 @@ export interface FormItemRegister {
   path: string;
   get?: <V>() => V | undefined;
   set?: <T>(value: T) => void;
-  validate?: <V>(value: V) => FormHelperInfo | undefined;
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>;
+  validate?: <V>(value: V) => FormHelperInfo;
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>;
   fieldRef?: React.RefObject<FocusableField | null>;
 }
 
