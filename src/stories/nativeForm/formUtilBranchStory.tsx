@@ -108,6 +108,35 @@ export const FormUtilBranchTest: FormStory = {
       );
 
       await step(
+        `In setValues,When validation failed, should return helper info for that path.`,
+        async () => {
+          const helpInfos = setValues(
+            [
+              { path: 'name', value: 'Tom' },
+              { path: 'salary', value: '800000' },
+            ],
+            {
+              name: {
+                path: 'name',
+                set: () => {},
+                validate: () => 'This is help text.',
+              },
+              salary: {
+                path: 'salary',
+                set: () => {},
+                validate: () => 'This is help text.',
+              },
+            }
+          );
+
+          expect(helpInfos).toEqual([
+            { helpInfo: 'This is help text.', path: 'name' },
+            { helpInfo: 'This is help text.', path: 'salary' },
+          ]);
+        }
+      );
+
+      await step(
         `In "setValueByPath", When formRegister is undefined, should warn ${valuePathNotFoundEntry('name')}`,
         async () => {
           setValueByPath('name', 'Tom', {});
@@ -130,6 +159,21 @@ export const FormUtilBranchTest: FormStory = {
           await expect(warnSpy).toHaveBeenCalledWith(
             `[litten warning]: ${setMethodNotFound()}`
           );
+        }
+      );
+
+      await step(
+        `In setValueByPath,When validation failed, should return helper info.`,
+        async () => {
+          const helpInfo = setValueByPath('name', 'Tom', {
+            name: {
+              path: 'name',
+              set: () => {},
+              validate: () => 'This is help text.',
+            },
+          });
+
+          expect(helpInfo).toEqual('This is help text.');
         }
       );
 

@@ -63,7 +63,7 @@ export const Form = forwardRef(
           return setValues(args, formRegister);
         },
         setValueByPath: (path: string, value: FormItemValue) => {
-          setValueByPath(path, value, formRegister);
+          return setValueByPath(path, value, formRegister);
         },
         validate: () => {
           return validate(formRegister, validationMode);

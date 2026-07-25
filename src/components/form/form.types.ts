@@ -6,8 +6,6 @@ import type {
   UserControlProps,
 } from 'litten-hooks/dist/control/userControl/userControl.types';
 
-import { BaseValidation } from './formBase';
-
 /**
  * 表单组件属性
  * @property children - 表单组件的子组件
@@ -174,10 +172,22 @@ export interface FormItemArgs {
 export type FormArgs = FormItemArgs[];
 
 /**
+ * 包含表单组件基础校验类型的对象。
+ *
+ * @property {string} Customize - 表示自定义校验类型。
+ */
+export const BaseValidationType = {
+  /**
+   * 表示自定义校验类型
+   */
+  Customize: 'customize',
+} as const;
+
+/**
  * 表单默认验证类型
  */
 export type BaseValidationType =
-  (typeof BaseValidation)[keyof typeof BaseValidation];
+  (typeof BaseValidationType)[keyof typeof BaseValidationType];
 
 /**
  * 扩展验证类型
@@ -235,7 +245,7 @@ export interface FormRef {
    * myForm.setValues([{ path: "name", value: "Tom" }, { path: "age", value: 18 }]);
    * ```
    */
-  setValues: (args: FormArgs) => void;
+  setValues: (args: FormArgs) => FormItemHelper[];
   /**
    * 通过属性路径获取表单项对应控件的值的方法
    * @param path 表单项的值路径
@@ -248,7 +258,7 @@ export interface FormRef {
    * @param value 表单项对应控件的值
    * @returns void
    */
-  setValueByPath: (path: string, value: FormItemValue) => void;
+  setValueByPath: (path: string, value: FormItemValue) => FormHelperInfo;
   /**
    * 通过属性路径设置表单项对应控件的帮助信息的方法
    * @param path 表单项的值路径

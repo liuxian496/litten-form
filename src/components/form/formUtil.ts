@@ -9,6 +9,7 @@ import {
 import type {
   FormArgs,
   FormHelperInfo,
+  FormItemHelper,
   FormItemValue,
   FormRegister,
   FormValues,
@@ -46,7 +47,7 @@ export function getValueByPath(path: string, formRegister: FormRegister) {
       value = get();
     }
   } else {
-    value = undefined;
+    warn(valuePathNotFoundEntry(path));
   }
 
   return value;
@@ -78,21 +79,32 @@ export function setHelpTextByPath(
  * @param {FormRegister} formRegister 表单注册器
  */
 export function setValues(args: FormArgs, formRegister: FormRegister) {
-  if (Array.isArray(args)) {
-    args.forEach((args) => {
-      const { path, value } = args;
-      const set = formRegister[path]?.set;
-      const validate = formRegister[path]?.validate;
-      if (set) {
-        set(value);
-        validate?.(value);
-      } else {
-        warn(setMethodNotFound());
-      }
-    });
-  } else {
+  const helpInfos: FormItemHelper[] = [];
+
+  if (!Array.isArray(args)) {
     warn(setValuesFirstParamNotArray());
+    return helpInfos;
   }
+
+  args.forEach((args) => {
+    const { path, value } = args;
+    const set = formRegister[path]?.set;
+    const validate = formRegister[path]?.validate;
+    if (set) {
+      set(value);
+      const helpInfo = validate?.(value);
+      if (helpInfo !== undefined) {
+        helpInfos.push({
+          helpInfo: helpInfo,
+          path: path,
+        });
+      }
+    } else {
+      warn(setMethodNotFound());
+    }
+  });
+
+  return helpInfos;
 }
 
 /**
@@ -113,7 +125,7 @@ export function setValueByPath(
 
     if (set) {
       set(value);
-      validate?.(value);
+      return validate?.(value);
     } else {
       warn(setMethodNotFound());
     }

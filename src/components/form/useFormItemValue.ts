@@ -7,7 +7,7 @@ import {
 } from 'react';
 
 import { FormContext } from './context';
-import type { FormHelperInfo } from './form.types';
+import type { FocusableField, FormHelperInfo } from './form.types';
 
 /**
  *  提供一个自定义hook, 用来实现表单项的受控逻辑
@@ -27,7 +27,7 @@ export function useFormItemValue<T, V = string>(
   initialValue?: T,
   onGetErrorMessage?: (value: V) => FormHelperInfo | undefined,
   setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>,
-  fieldRef?: React.RefObject<HTMLElement>
+  fieldRef?: React.RefObject<FocusableField | null>
 ) {
   const formContext = useContext(FormContext);
 

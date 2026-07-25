@@ -5,7 +5,7 @@ import { warn } from '../util';
 
 import { commonValidationAssertNotFound } from './entries';
 import type { FormItemValidation } from './form.types';
-import { BaseValidation } from './formBase';
+import { BaseValidationType } from './form.types';
 
 /**
  * 提供一个自定义hook，管理表单项的帮助信息
@@ -30,7 +30,7 @@ export function useHelperInfo<T, V, VT>(validations: FormItemValidation<VT>[]) {
     for (let i = 0; i < max; i++) {
       const { helpInfo: info, type, validationAssert } = validations[i];
 
-      if (type === BaseValidation.Customize) {
+      if (type === BaseValidationType.Customize) {
         if (validationAssert !== undefined) {
           invalid = validationAssert(value) === false;
         } else {

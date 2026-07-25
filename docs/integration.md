@@ -51,10 +51,10 @@ initLittenForm 接收 FormInjector：
 参考实现：
 
 ```ts
-import { BaseValidation } from 'litten-form/dist/components/form/formBase';
+import { BaseValidationType } from 'litten-form/dist/components/form/formBase';
 
 export const ValidationType = {
-  ...BaseValidation,
+  ...BaseValidationType,
   StringRequired: 'stringRequired',
 } as const;
 
