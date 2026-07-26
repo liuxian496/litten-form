@@ -1,17 +1,16 @@
-import type { ChangeEvent, FocusEvent } from 'react';
+import { useRef, type ChangeEvent, type FocusEvent } from 'react';
 
 import { TextField } from 'litten/dist/textField';
-
 import { ControlType, getDefaultValueByDisplayName } from 'litten-hooks';
 import type {
   LittenEvent,
   TextFieldValue,
 } from 'litten-hooks/dist/control/event/littenEvent.types';
 
-import { type FormHelperInfo } from '../../../components/form/form.types';
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 import { useHelperInfo } from '../../../components/form/useHelperInfo';
 import type { ValidationType } from '../../form/validation';
+
 import type { LittenTextFieldProps } from './littenTextField.types';
 
 export const LittenTextField = ({
@@ -22,14 +21,17 @@ export const LittenTextField = ({
   onChange,
   ...props
 }: LittenTextFieldProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [currentHelperText, verifyFormItem, setCurrentHelperText] =
-    useHelperInfo<FormHelperInfo, string, ValidationType>(validations);
+    useHelperInfo<string, ValidationType>(validations);
 
   const [value, setValue] = useFormItemValue<TextFieldValue>(
     path,
     initialValue,
     verifyFormItem,
-    setCurrentHelperText
+    setCurrentHelperText,
+    inputRef
   );
 
   function handleChange(
@@ -53,6 +55,7 @@ export const LittenTextField = ({
           defaultValue={getDefaultValueByDisplayName(ControlType.TextField)}
           onChange={handleChange}
           onBlur={handleBlur}
+          ref={inputRef}
         />
         <div
           style={{ color: '#d32f2f', fontStyle: 'italic', fontSize: '0.88rem' }}

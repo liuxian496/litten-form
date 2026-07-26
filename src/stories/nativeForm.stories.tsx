@@ -1,11 +1,13 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { type Meta } from '@storybook/react-vite';
 
 import { Form } from '../components/form/form';
 
 import { CheckboxTest } from './nativeForm/checkboxStory';
 import { DuplicateValuePathTest } from './nativeForm/duplicateValuePathStory';
+import { FocusTest } from './nativeForm/focusStory';
 import { FormUtilBranchTest } from './nativeForm/formUtilBranchStory';
 import { FormUtilTest } from './nativeForm/formUtilStory';
+import { InitialValueTest } from './nativeForm/initialValueStory';
 import { MultiFormTest } from './nativeForm/multiFormStory';
 import { TextFieldTest } from './nativeForm/textFieldStory';
 import { UseHelperInfoBranchTest } from './nativeForm/useHelperInfoBranchStory';
@@ -29,8 +31,6 @@ export default {
   },
 } as Meta<typeof Form>;
 
-export type FormStory = StoryObj<typeof Form>;
-
 export const TextField = TextFieldTest;
 export const Checkbox = CheckboxTest;
 export const DuplicateValuePath = DuplicateValuePathTest;
@@ -44,3 +44,5 @@ export const UseHelperInfoBranch = {
   ...UseHelperInfoBranchTest,
 };
 export const MultiForm = MultiFormTest;
+export const Focus = FocusTest;
+export const InitialValue = InitialValueTest;

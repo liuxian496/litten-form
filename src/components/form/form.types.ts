@@ -1,10 +1,6 @@
-import type {
-  LittenObjectValue,
-  LittenValue,
-  UserControlProps,
-} from 'litten-hooks/dist/control/userControl/userControl.types';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
-import { BaseValidation } from './formBase';
+
+import type { UserControlProps } from 'litten-hooks/dist/control/userControl/userControl.types';
 
 /**
  * 表单组件属性
@@ -23,14 +19,10 @@ export interface FormProps extends UserControlProps {
 }
 
 /**
- * 表单项数据
+ * 表单项验证后的提示信息，可以是string, JSX.Element，或者Undefined
+ * 通常使用string就可以满足基本的验证提示需求
  */
-export type FormItemValue = LittenValue | LittenObjectValue;
-
-/**
- * 表单项验证后的提示文字
- */
-export type FormHelperInfo = string | JSX.Element;
+export type FormHelperInfo = string | JSX.Element | undefined;
 
 /**
  * 表单验证模式常量
@@ -62,7 +54,17 @@ export type ValidationMode =
  * 表单数据
  */
 export interface FormValues {
-  [index: string]: FormItemValue;
+  [index: string]: unknown;
+}
+
+/**
+ * 可聚焦的表单控件接口
+ * 任何实现了该接口的表单控件都应提供一个 focus 方法，用于将焦点设置到该控件上
+ * 这对于表单验证失败时自动聚焦非常有用
+ * @property focus - 将焦点设置到该控件的方法
+ */
+export interface FocusableField {
+  focus: () => void;
 }
 
 /**
@@ -72,13 +74,15 @@ export interface FormValues {
  * @property set - 设置表单项值的方法
  * @property validate - 可选的验证函数，接受表单项值作为参数，返回一个字符串或JSX元素表示验证结果
  * @property setHelperText - 可选的设置帮助信息的方法，接受一个字符串或JSX元素作为参数
+ * @property fieldRef - 可选的表单控件引用，用于访问控件的实例方法，如 focus
  */
 export interface FormItemRegister {
   path: string;
   get?: <V>() => V | undefined;
   set?: <T>(value: T) => void;
-  validate?: <V>(value: V) => FormHelperInfo | undefined;
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>;
+  validate?: <V>(value: V) => FormHelperInfo;
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>;
+  fieldRef?: React.RefObject<FocusableField | null>;
 }
 
 /**
@@ -150,7 +154,7 @@ export interface FormItemProps<T, V> {
  */
 export interface FormItemArgs {
   path: string;
-  value: FormItemValue;
+  value: unknown;
 }
 
 /**
@@ -160,10 +164,22 @@ export interface FormItemArgs {
 export type FormArgs = FormItemArgs[];
 
 /**
+ * 包含表单组件基础校验类型的对象。
+ *
+ * @property {string} Customize - 表示自定义校验类型。
+ */
+export const BaseValidationType = {
+  /**
+   * 表示自定义校验类型
+   */
+  Customize: 'customize',
+} as const;
+
+/**
  * 表单默认验证类型
  */
 export type BaseValidationType =
-  (typeof BaseValidation)[keyof typeof BaseValidation];
+  (typeof BaseValidationType)[keyof typeof BaseValidationType];
 
 /**
  * 扩展验证类型
@@ -205,7 +221,6 @@ export interface FormItemHelper {
  * @property getValueByPath - 通过属性路径获取表单项对应控件的值的方法，接受一个字符串类型的路径作为参数，返回对应的值
  * @property setValueByPath - 通过属性路径设置表单项对应控件的值的方法，接受一个字符串类型的路径和一个值作为参数
  * @property setHelpTextByPath - 通过属性路径设置表单项的帮助信息的方法，接受一个字符串类型的路径和一个错误消息（字符串或JSX元素）作为参数
- * @property clear - 将所有表单项的值设置成undefined
  */
 export interface FormRef {
   /**
@@ -222,20 +237,20 @@ export interface FormRef {
    * myForm.setValues([{ path: "name", value: "Tom" }, { path: "age", value: 18 }]);
    * ```
    */
-  setValues: (args: FormArgs) => void;
+  setValues: (args: FormArgs) => FormItemHelper[];
   /**
    * 通过属性路径获取表单项对应控件的值的方法
    * @param path 表单项的值路径
    * @returns 表单项的值
    */
-  getValueByPath: (path: string) => FormItemValue;
+  getValueByPath: (path: string) => unknown;
   /**
    * 通过属性路径设置表单项对应控件的值的方法
    * @param path 表单项的值路径
    * @param value 表单项对应控件的值
    * @returns void
    */
-  setValueByPath: (path: string, value: FormItemValue) => void;
+  setValueByPath: (path: string, value: unknown) => FormHelperInfo;
   /**
    * 通过属性路径设置表单项对应控件的帮助信息的方法
    * @param path 表单项的值路径
@@ -244,15 +259,16 @@ export interface FormRef {
    */
   setHelpTextByPath: (path: string, helpText: FormHelperInfo) => void;
   /**
-   * 清空表单所有项的值
-   * @returns void
-   */
-  clear: () => void;
-  /**
    * 表单验证
    * @returns 表单验证结果数组
    */
   validate: () => FormItemHelper[];
+  /**
+   * 通过属性路径聚焦表单项对应控件的方法
+   * @param path 表单项的值路径
+   * @returns void
+   */
+  focusFieldByPath: (path: string) => void;
 }
 
 /**

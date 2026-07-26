@@ -1,7 +1,7 @@
-import { BaseValidation } from '../../components/form/formBase';
+import { BaseValidationType } from '@/components/form/form.types';
 
 export const ValidationType = {
-  ...BaseValidation,
+  ...BaseValidationType,
   /**
    * 字符串必填
    */

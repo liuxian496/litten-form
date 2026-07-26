@@ -1,5 +1,7 @@
 import { warn } from '../util';
+
 import {
+  focusNotFound,
   setMethodNotFound,
   setValuesFirstParamNotArray,
   valuePathNotFoundEntry,
@@ -7,7 +9,7 @@ import {
 import type {
   FormArgs,
   FormHelperInfo,
-  FormItemValue,
+  FormItemHelper,
   FormRegister,
   FormValues,
 } from './form.types';
@@ -44,7 +46,7 @@ export function getValueByPath(path: string, formRegister: FormRegister) {
       value = get();
     }
   } else {
-    value = undefined;
+    warn(valuePathNotFoundEntry(path));
   }
 
   return value;
@@ -76,21 +78,32 @@ export function setHelpTextByPath(
  * @param {FormRegister} formRegister 表单注册器
  */
 export function setValues(args: FormArgs, formRegister: FormRegister) {
-  if (Array.isArray(args)) {
-    args.forEach((args) => {
-      const { path, value } = args;
-      const set = formRegister[path]?.set;
-      const validate = formRegister[path]?.validate;
-      if (set) {
-        set(value);
-        validate?.(value);
-      } else {
-        warn(setMethodNotFound());
-      }
-    });
-  } else {
+  const helpInfos: FormItemHelper[] = [];
+
+  if (!Array.isArray(args)) {
     warn(setValuesFirstParamNotArray());
+    return helpInfos;
   }
+
+  args.forEach((args) => {
+    const { path, value } = args;
+    const set = formRegister[path]?.set;
+    const validate = formRegister[path]?.validate;
+    if (set) {
+      set(value);
+      const helpInfo = validate?.(value);
+      if (helpInfo !== undefined) {
+        helpInfos.push({
+          helpInfo: helpInfo,
+          path: path,
+        });
+      }
+    } else {
+      warn(setMethodNotFound());
+    }
+  });
+
+  return helpInfos;
 }
 
 /**
@@ -102,7 +115,7 @@ export function setValues(args: FormArgs, formRegister: FormRegister) {
  */
 export function setValueByPath(
   path: string,
-  value: FormItemValue,
+  value: unknown,
   formRegister: FormRegister
 ) {
   const formItemRegister = formRegister[path];
@@ -111,9 +124,27 @@ export function setValueByPath(
 
     if (set) {
       set(value);
-      validate?.(value);
+      return validate?.(value);
     } else {
       warn(setMethodNotFound());
+    }
+  } else {
+    warn(valuePathNotFoundEntry(path));
+  }
+}
+
+/**
+ * 聚焦指定表单项
+ * @param path 表单项的唯一路径（valuePath）
+ * @param formRegister 当前表单的注册器对象
+ */
+export function focusFieldByPath(path: string, formRegister: FormRegister) {
+  const formItemRegister = formRegister[path];
+  if (formItemRegister) {
+    if (formItemRegister.fieldRef?.current?.focus) {
+      formItemRegister.fieldRef.current.focus();
+    } else {
+      warn(focusNotFound(path));
     }
   } else {
     warn(valuePathNotFoundEntry(path));

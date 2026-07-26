@@ -7,7 +7,7 @@ import {
 } from 'react';
 
 import { FormContext } from './context';
-import type { FormHelperInfo } from './form.types';
+import type { FocusableField, FormHelperInfo } from './form.types';
 
 /**
  *  提供一个自定义hook, 用来实现表单项的受控逻辑
@@ -25,8 +25,9 @@ import type { FormHelperInfo } from './form.types';
 export function useFormItemValue<T, V = string>(
   valuePath: string,
   initialValue?: T,
-  onGetErrorMessage?: (value: V) => FormHelperInfo | undefined,
-  setHelperText?: Dispatch<SetStateAction<FormHelperInfo | undefined>>
+  onGetErrorMessage?: (value: V, path: string) => FormHelperInfo,
+  setHelperText?: Dispatch<SetStateAction<FormHelperInfo>>,
+  fieldRef?: React.RefObject<FocusableField | null>
 ) {
   const formContext = useContext(FormContext);
 
@@ -47,10 +48,18 @@ export function useFormItemValue<T, V = string>(
       },
       set: setValue as <T>(value: T) => void,
       validate: <T>(newValue: T) =>
-        onGetErrorMessage?.(newValue as unknown as V),
+        onGetErrorMessage?.(newValue as unknown as V, valuePath),
       setHelperText: setHelperText,
+      fieldRef,
     });
-  }, [formContext, onGetErrorMessage, value, valuePath, setHelperText]);
+  }, [
+    formContext,
+    onGetErrorMessage,
+    value,
+    valuePath,
+    setHelperText,
+    fieldRef,
+  ]);
 
   return [value as T, setValue] as [T, Dispatch<SetStateAction<T>>];
 }

@@ -4,7 +4,7 @@
  * @returns 警告信息字符串
  */
 export function valuePathNotFoundEntry(path: string) {
-  return `Can not find the valuePath "${path}" in form. Please check if the form item is registered.`;
+  return `Can not find the path "${path}" in form. Please check if the form item is registered.`;
 }
 
 /**
@@ -29,4 +29,17 @@ export function setMethodNotFound() {
  */
 export function commonValidationAssertNotFound() {
   return 'Can not find commonValidationAssert in formInjector, please provide it to support validation types other than Customize.';
+}
+
+/**
+ * 当尝试聚焦一个不存在的表单项时的警告信息
+ * @param path 表单项的唯一路径（path）
+ * @returns 警告信息字符串
+ */
+export function focusNotFound(path: string) {
+  return `The fieldRef for path "${path}" does not have a focus method.`;
+}
+
+export function validationAssertNotFoundEntry(path: string) {
+  return `When using custom validation, validationAssert must be configured. The path missing this setting is: ${path}`;
 }

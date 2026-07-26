@@ -1,20 +1,21 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 
+import { ExceptionBoundary } from 'exception-boundary';
+import { ControlType } from 'litten-hooks/dist/enum';
+
+import { validate } from '../validation';
+
+import { FormContext, initContext } from './context';
 import {
   ValidationMode,
   type FormArgs,
   type FormHelperInfo,
-  type FormItemValue,
   type FormProps,
   type FormRegister,
 } from './form.types';
-
-import { ExceptionBoundary } from 'exception-boundary';
-import { ControlType } from 'litten-hooks/dist/enum';
-import { validate } from '../validation';
-import { FormContext, initContext } from './context';
 import { getVisualStates } from './formBase';
 import {
+  focusFieldByPath,
   getValueByPath,
   getValues,
   setHelpTextByPath,
@@ -60,11 +61,14 @@ export const Form = forwardRef(
         setValues: (args: FormArgs) => {
           return setValues(args, formRegister);
         },
-        setValueByPath: (path: string, value: FormItemValue) => {
-          setValueByPath(path, value, formRegister);
+        setValueByPath: (path: string, value: unknown) => {
+          return setValueByPath(path, value, formRegister);
         },
         validate: () => {
           return validate(formRegister, validationMode);
+        },
+        focusFieldByPath: (path: string) => {
+          focusFieldByPath(path, formRegister);
         },
       };
     }, [formRegister, validationMode]);

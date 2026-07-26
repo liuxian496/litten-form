@@ -37,6 +37,8 @@ export const FormPaths = {
    * 总数的字段路径
    */
   total: 'total',
+  // 邮箱的字段路径
+  email: 'email',
 };
 
 /**
@@ -48,13 +50,15 @@ export const FormPaths = {
  * @property {string} role - 角色，类型为字符串。
  * @property {number} salary - 薪水，类型为数字。
  * @property {number} total - 总计，类型为数字。
+ * @property {string} email - 邮箱，类型为字符串。
  */
 export type BasicFormData = {
-  animation?: string;
-  count?: number;
-  fruit?: boolean;
-  name?: string;
-  role?: string;
-  salary?: number;
-  total?: number;
+  [FormPaths.animation]?: string;
+  [FormPaths.count]?: number;
+  [FormPaths.fruit]?: boolean;
+  [FormPaths.name]?: string;
+  [FormPaths.role]?: string;
+  [FormPaths.salary]?: number;
+  [FormPaths.total]?: number;
+  [FormPaths.email]?: string;
 };

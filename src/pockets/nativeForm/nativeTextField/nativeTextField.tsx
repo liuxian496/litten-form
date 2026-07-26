@@ -1,8 +1,9 @@
-import { type ChangeEvent } from 'react';
-import { type FormHelperInfo } from '../../../components/form/form.types';
+import { useRef, type ChangeEvent } from 'react';
+
 import { useFormItemValue } from '../../../components/form/useFormItemValue';
 import { useHelperInfo } from '../../../components/form/useHelperInfo';
 import type { ValidationType } from '../../form/validation';
+
 import type { NativeTextFieldProps } from './nativeTextField.types';
 import { getVisualStates, PartsVisualStates } from './nativeTextFieldBase';
 
@@ -17,8 +18,9 @@ export const NativeTextField = ({
   onBlur,
   ...props
 }: NativeTextFieldProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [currentHelperText, verify, setCurrentHelperText] = useHelperInfo<
-    FormHelperInfo,
     string,
     ValidationType
   >(validations);
@@ -27,7 +29,8 @@ export const NativeTextField = ({
     path,
     initialValue,
     verify,
-    setCurrentHelperText
+    setCurrentHelperText,
+    inputRef
   );
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
@@ -54,10 +57,12 @@ export const NativeTextField = ({
           <div>{label}</div>
           <input
             {...props}
+            aria-label={label}
             type="text"
-            value={value}
+            value={value ?? ''}
             onChange={handleInputChange}
             onBlur={handleBlur}
+            ref={inputRef}
           />
           {renderHelpInfo()}
         </label>

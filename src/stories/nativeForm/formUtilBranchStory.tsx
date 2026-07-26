@@ -1,19 +1,22 @@
 import { expect, spyOn } from 'storybook/test';
 
 import {
+  focusNotFound,
   setMethodNotFound,
   setValuesFirstParamNotArray,
   valuePathNotFoundEntry,
 } from '../../components/form/entries';
 import {
+  focusFieldByPath,
   getValueByPath,
   getValues,
   setHelpTextByPath,
   setValueByPath,
   setValues,
 } from '../../components/form/formUtil';
-import { FormStory } from '../nativeForm.stories';
+import { type FormStory } from '../nativeForm/nativeFormStory.types';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Test = () => {
   return <div>测试FormUtil的分支逻辑</div>;
 };
@@ -105,6 +108,35 @@ export const FormUtilBranchTest: FormStory = {
       );
 
       await step(
+        `In setValues,When validation failed, should return helper info for that path.`,
+        async () => {
+          const helpInfos = setValues(
+            [
+              { path: 'name', value: 'Tom' },
+              { path: 'salary', value: '800000' },
+            ],
+            {
+              name: {
+                path: 'name',
+                set: () => {},
+                validate: () => 'This is help text.',
+              },
+              salary: {
+                path: 'salary',
+                set: () => {},
+                validate: () => 'This is help text.',
+              },
+            }
+          );
+
+          expect(helpInfos).toEqual([
+            { helpInfo: 'This is help text.', path: 'name' },
+            { helpInfo: 'This is help text.', path: 'salary' },
+          ]);
+        }
+      );
+
+      await step(
         `In "setValueByPath", When formRegister is undefined, should warn ${valuePathNotFoundEntry('name')}`,
         async () => {
           setValueByPath('name', 'Tom', {});
@@ -126,6 +158,47 @@ export const FormUtilBranchTest: FormStory = {
 
           await expect(warnSpy).toHaveBeenCalledWith(
             `[litten warning]: ${setMethodNotFound()}`
+          );
+        }
+      );
+
+      await step(
+        `In setValueByPath,When validation failed, should return helper info.`,
+        async () => {
+          const helpInfo = setValueByPath('name', 'Tom', {
+            name: {
+              path: 'name',
+              set: () => {},
+              validate: () => 'This is help text.',
+            },
+          });
+
+          expect(helpInfo).toEqual('This is help text.');
+        }
+      );
+
+      await step(
+        `In "focusFieldByPath", When form item do not have a focusable fieldRef, should warn ${focusNotFound('name')}`,
+        async () => {
+          focusFieldByPath('name', {
+            name: {
+              path: 'name',
+            },
+          });
+
+          await expect(warnSpy).toHaveBeenCalledWith(
+            `[litten warning]: ${focusNotFound('name')}`
+          );
+        }
+      );
+
+      await step(
+        `In "focusFieldByPath", When formRegister do not have the path, should warn ${valuePathNotFoundEntry('name')}`,
+        async () => {
+          focusFieldByPath('name', {});
+
+          await expect(warnSpy).toHaveBeenCalledWith(
+            `[litten warning]: ${valuePathNotFoundEntry('name')}`
           );
         }
       );
