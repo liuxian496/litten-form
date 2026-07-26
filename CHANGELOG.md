@@ -1,3 +1,18 @@
+# [4.0.0](https://github.com/liuxian496/litten-form/compare/v3.0.0...v4.0.0) (2026-07-26)
+
+
+### Bug Fixes
+
+* 修复受控的input初始值可以设置成undefined的问题 ([2b9f73f](https://github.com/liuxian496/litten-form/commit/2b9f73f138ff1234961d7a214501db65017c9041))
+
+
+### Features
+
+* 添加focusFieldByPath方法，支持验证失败后，通过传递path使用该方法，将焦点设置给需要的表单控件 ([3c0e6cb](https://github.com/liuxian496/litten-form/commit/3c0e6cb54329c21d60d596807591ad3b8041c620))
+* 添加mounter组件 ([b4ac2a3](https://github.com/liuxian496/litten-form/commit/b4ac2a35cd78b4b68c24e4a511f2b4d761ddef75))
+
+
+
 # [3.0.0](https://github.com/liuxian496/litten-form/compare/v2.1.0...v3.0.0) (2026-05-10)
 
 
