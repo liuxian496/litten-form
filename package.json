@@ -1,7 +1,7 @@
 {
   "name": "litten-form",
   "private": false,
-  "version": "4.0.0",
+  "version": "4.1.0",
   "type": "module",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -71,7 +71,7 @@
     "eslint-plugin-storybook": "^10.3.3",
     "husky": "^9.0.11",
     "less": "^4.2.0",
-    "litten": "^1.0.3",
+    "litten": "^2.0.0",
     "playwright": "^1.59.0",
     "rollup-plugin-visualizer": "^5.12.0",
     "storybook": "^10.3.3",

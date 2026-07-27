@@ -13,8 +13,9 @@ const Test = () => {
   const [formRef, basicForm] = useForm();
 
   function handleSaveBtuClick() {
-    const errors = basicForm?.validate() || [];
+    const errors = basicForm?.validate({ focusOnError: false }) || [];
     if (errors.length > 0) {
+      basicForm?.focusFieldByPath(errors[errors.length - 1].path);
       return;
     }
 
@@ -51,7 +52,7 @@ const Test = () => {
   return render();
 };
 
-export const FocusTest: FormStory = {
+export const CustomFocusTest: FormStory = {
   parameters: {
     controls: { hideNoControlsWarning: true },
   },
@@ -63,29 +64,14 @@ export const FocusTest: FormStory = {
     const salaryInput = await canvas.findByLabelText('Salary:');
 
     await step(
-      'When clicking Save without filling any fields, the first required field (Name) should receive focus and display its required message.',
+      'When clicking Save without filling any fields, the last required field (Salary) should receive focus and display its required message.',
       async () => {
         await userEvent.click(saveButton);
 
         expect(
           await canvas.findAllByText('This field is required.')
         ).toHaveLength(2);
-        expect(nameInput).toHaveFocus();
-        expect(salaryInput).not.toHaveFocus();
-      }
-    );
-
-    await step(
-      'After filling the Name field and clicking Save, the Salary field should receive focus and display its required message.',
-      async () => {
-        await userEvent.type(nameInput, 'moss');
-
-        await userEvent.click(saveButton);
-
-        expect(
-          await canvas.findAllByText('This field is required.')
-        ).toHaveLength(1);
-
+        expect(nameInput).not.toHaveFocus();
         expect(salaryInput).toHaveFocus();
       }
     );

@@ -3,12 +3,14 @@ import { type Meta } from '@storybook/react-vite';
 import { Form } from '../components/form/form';
 
 import { CheckboxTest } from './nativeForm/checkboxStory';
+import { CustomFocusTest } from './nativeForm/customFocusStory';
 import { DuplicateValuePathTest } from './nativeForm/duplicateValuePathStory';
 import { FocusTest } from './nativeForm/focusStory';
 import { FormUtilBranchTest } from './nativeForm/formUtilBranchStory';
 import { FormUtilTest } from './nativeForm/formUtilStory';
 import { InitialValueTest } from './nativeForm/initialValueStory';
 import { MultiFormTest } from './nativeForm/multiFormStory';
+import { NoAutoFocusTest } from './nativeForm/noAutoFocusStory';
 import { TextFieldTest } from './nativeForm/textFieldStory';
 import { UseHelperInfoBranchTest } from './nativeForm/useHelperInfoBranchStory';
 import { ValidationBranchTest } from './nativeForm/validationBranchStory';
@@ -45,4 +47,6 @@ export const UseHelperInfoBranch = {
 };
 export const MultiForm = MultiFormTest;
 export const Focus = FocusTest;
+export const NoAutoFocus = NoAutoFocusTest;
+export const CustomFocus = CustomFocusTest;
 export const InitialValue = InitialValueTest;

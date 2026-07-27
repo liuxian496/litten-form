@@ -1,6 +1,6 @@
 import { useRef, type ChangeEvent, type FocusEvent } from 'react';
 
-import { TextField } from 'litten/dist/textField';
+import { TextField } from 'litten';
 import { ControlType, getDefaultValueByDisplayName } from 'litten-hooks';
 import type {
   LittenEvent,
