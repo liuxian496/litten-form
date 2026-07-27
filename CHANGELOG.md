@@ -1,3 +1,12 @@
+# [4.1.0](https://github.com/liuxian496/litten-form/compare/v4.0.0...v4.1.0) (2026-07-27)
+
+
+### Features
+
+* 验证失败时自动聚焦首个错误字段，支持自定义焦点控制 ([a31dca9](https://github.com/liuxian496/litten-form/commit/a31dca9106c70edfb37164b236b773d0c310a360))
+
+
+
 # [4.0.0](https://github.com/liuxian496/litten-form/compare/v3.0.0...v4.0.0) (2026-07-26)
 
 
