@@ -260,9 +260,11 @@ export interface FormRef {
   setHelpTextByPath: (path: string, helpText: FormHelperInfo) => void;
   /**
    * 表单验证
-   * @returns 表单验证结果数组
+   * @param options - 验证选项
+   * @param options.focusOnError - 验证失败时是否自动聚焦到第一个错误表单项（可选，默认为 false）
+   * @returns 表单验证结果数组，包含每个验证失败表项的帮助信息和路径
    */
-  validate: () => FormItemHelper[];
+  validate: (options?: { focusOnError?: boolean }) => FormItemHelper[];
   /**
    * 通过属性路径聚焦表单项对应控件的方法
    * @param path 表单项的值路径
