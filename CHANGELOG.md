@@ -1,3 +1,12 @@
+# [4.2.0](https://github.com/liuxian496/litten-form/compare/v4.1.0...v4.2.0) (2026-08-04)
+
+
+### Features
+
+* 添加外部需要的类型导出 ([5aa3e89](https://github.com/liuxian496/litten-form/commit/5aa3e89e6834139a3a5af2f89078a5b2a884479a))
+
+
+
 # [4.1.0](https://github.com/liuxian496/litten-form/compare/v4.0.0...v4.1.0) (2026-07-27)
 
 
